@@ -70,8 +70,8 @@ body {
 .nav li {
     display: inline;
     margin-right: 50px;
-    font-size: 30px;
-    font-family: caviar;
+    font-size: 25px;
+    font-family: lemon;
 }
 
 .nav li a {
@@ -115,6 +115,12 @@ body {
     font-family: caviar;
     font-size: 20px;
     margin-top: 12px;
+    text-align: left;
+}
+
+.overlay .info-box .info img {
+    float: left;
+    margin-right: 15px;
 }
 
 .overlay .info-box .close {
