@@ -39,6 +39,8 @@ var anchor;
 // The current mouse position
 var mouse = {x: 0, y: 0};
 
+var centPage = {x:canvas.width/2, y:canvas.height/2};
+
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
     mouse = {x: e.pageX, y: e.pageY};

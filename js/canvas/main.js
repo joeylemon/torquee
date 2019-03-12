@@ -23,11 +23,14 @@ function draw() {
     }
 
     // Draw an arrow if the user is currently dragging
+	// Also begin torque calculation
     if(anchor){
         var drag = getDrag();
 
         drawLineWithArrow(anchor, mouse);
         drawText(drag.getText(), 23, drag.getTextPosition());
+		
+		calcTorque(centPage,anchor,mouse,drag.getForce());
     }
 
     // Request the next frame to be drawn
@@ -109,4 +112,23 @@ function drawArrowhead(context, from, to, radius) {
     context.closePath();
 
     context.fill();
+}
+
+function calcTorque(origin,from,to,mag){
+	var angle;
+	var tX;
+	var tY;
+	var fmtStr;
+	
+	angle = Math.atan2(to.y - from.y, to.x - from.x);
+	tX = (Math.cos(angle) * mag) * (from.y - origin.y);
+	tY = (Math.sin(angle) * mag) * (from.x - origin.x);
+	
+	fmtStr = " Torque X component: " + Math.floor(tX) + " Nm\r";
+	drawText(fmtStr, 23, centPage);
+	
+	centPage.y += 23;
+	fmtStr = " Torque Y component: " + Math.floor(tY) + " Nm\r";
+	drawText(fmtStr, 23, centPage);
+	centPage.y -= 23;
 }
