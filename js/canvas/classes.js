@@ -14,8 +14,8 @@ class Drag {
             y: this.force * Math.sin(this.angle)
         }
         this.component_text = {
-            x: new ComponentText(Component.X, this.quadrant, this.from, this.to, this.force.toFixed(0) + "cos(θ) = " + this.components.x.toFixed(0) + " N"),
-            y: new ComponentText(Component.Y, this.quadrant, this.from, this.to, this.force.toFixed(0) + "sin(θ) = " + this.components.y.toFixed(0) + " N"),
+            x: new ComponentText(Component.X, from, to, this.force, this.quadrant, this.components),
+            y: new ComponentText(Component.Y, from, to, this.force, this.quadrant, this.components),
         }
 
         this.text_pos = {x: to.x, y: to.y - 18};
@@ -47,6 +47,11 @@ class Drag {
             resetDrawColor();
         }
 
+        if(this.force < 0.5){
+            drawSolidLine(this.from, this.to, 7);
+            return;
+        }
+        
         drawLineWithArrow(this.from, this.to, 7);
         drawText(this.force.toFixed(0) + " N", 23, this.text_pos);
     }
@@ -56,12 +61,15 @@ class Drag {
  * Draws an x or y component for a given drag
  */
 class ComponentText {
-    constructor(component, quadrant, from, to, str) {
+    constructor(component, from, to, force, quadrant, components) {
         this.component = component;
-        this.quadrant = quadrant;
         this.from = from;
         this.to = to;
-        this.str = str;
+        this.force = force;
+        this.quadrant = quadrant;
+        this.components = components;
+        this.angle = Math.atan2(Math.abs(to.y - from.y), Math.abs(to.x - from.x));
+        this.deg_angle = radToDeg(this.angle);
 
         if(component == Component.X) {
             this.loc = {
@@ -78,10 +86,10 @@ class ComponentText {
 
     draw() {
         if(this.component == Component.X) {
-            drawText(this.str, 10, this.loc);
+            drawText(this.force.toFixed(0) + "cos(" + this.deg_angle.toFixed(0) + ") = " + Math.abs(this.components.x).toFixed(0) + " N", 10, this.loc);
         }else if(this.component == Component.Y) {
             rotateCanvas(-Math.PI/2, this.loc);
-            drawText(this.str, 10, {x:0,y:0});
+            drawText(this.force.toFixed(0) + "sin(" + this.deg_angle.toFixed(0) + ") = " + Math.abs(this.components.y).toFixed(0) + " N", 10, {x:0,y:0});
             unrotateCanvas();
         }
     }

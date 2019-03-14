@@ -17,7 +17,10 @@ $("#canvas").mousedown(function(e) {
 // Listen for the ending of a mouse drag
 $("#canvas").mouseup(function(e) {
     // applyForce(force, object);
-    drags.push(getDrag());
+    var drag = getDrag();
+    if(drag.force > 0.5) {
+        drags.push(drag);
+    }
     anchor = undefined;
 });
 
