@@ -1,3 +1,7 @@
+const Component = {
+    X: 1, Y: 2
+};
+
 /**
  * Get the distance between two positions
  * 
@@ -15,4 +19,13 @@ function distance(p1, p2) {
  */
 function getDragForce(dist) {
     return Math.pow(dist / 20, 2);
+}
+
+/**
+ * Convert radians to degrees
+ * 
+ * @param {number} radians The radians to convert
+ */
+function radToDeg(radians) {
+    return radians * (180 / Math.PI);
 }
