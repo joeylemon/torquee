@@ -28,10 +28,12 @@ createHiDPICanvas = function (w, h, ratio) {
 // Initialize the canvas and context
 var canvas = createHiDPICanvas($("#canvas").width(), $("#canvas").height());
 var ctx = canvas.getContext("2d");
+var default_color = "#000";
 ctx.translate(0.5, 0.5);
 ctx.lineCap = "round";
-ctx.fillStyle = "#000";
-ctx.strokeStyle = "#000";
+ctx.textAlign = "center"; 
+ctx.fillStyle = default_color;
+ctx.strokeStyle = default_color;
 
 // The anchor for a mouse drag
 var anchor;
@@ -64,17 +66,35 @@ function drawText(str, size, pos) {
 }
 
 /**
+ * Draw a solid line
+ * 
+ * @param {Object} from The origin coordinates
+ * @param {Object} to The destination coordinates
+ * @param {number} width The width of the line
+ */
+function drawSolidLine(from, to, width) {
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.lineWidth = width;
+    ctx.stroke();
+}
+
+/**
  * Draw a dashed line
  * 
  * @param {Object} from The origin coordinates
  * @param {Object} to The destination coordinates
+ * @param {number} width The width of the line
+ * @param {Array} dash The dashing of the line [<length>, <spacing>] 
  */
-function drawDashedLine(from, to) {
+function drawDashedLine(from, to, width, dash = [5, 15]) {
     ctx.beginPath();
-    ctx.setLineDash([5, 15]);
+    ctx.setLineDash(dash);
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
-    ctx.lineWidth = 7;
+    ctx.lineWidth = width;
     ctx.stroke();
 }
 
@@ -83,10 +103,11 @@ function drawDashedLine(from, to) {
  * 
  * @param {Object} from The origin coordinates
  * @param {Object} to The destination coordinates
+ * @param {number} width The width of the line
  */
-function drawLineWithArrow(from, to) {
-    this.drawDashedLine(from, to);
-    drawArrowhead(ctx, from, to, 10);
+function drawLineWithArrow(from, to, width) {
+    this.drawSolidLine(from, to, width);
+    drawArrowhead(ctx, from, to, 12);
 }
 
 /**
@@ -128,4 +149,14 @@ function drawArrowhead(context, from, to, radius) {
     context.closePath();
 
     context.fill();
+}
+
+function setDrawColor(color) {
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+}
+
+function resetDrawColor() {
+    ctx.fillStyle = default_color;
+    ctx.strokeStyle = default_color;
 }
