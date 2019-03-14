@@ -3,29 +3,29 @@
  */
 class Drag {
     constructor(from, to) {
+        this.from = from;
+        this.to = to;
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
-        this.txt_pos = {x: to.x + 15, y: to.y + 10};
+
+        this.text = {
+            size: 23,
+            pos: {x: to.x + 15, y: to.y + 10},
+            str: this.force.toFixed(0) + " N"
+        }
+
+        var angle = Math.atan2(to.y - from.y, to.x - from.x);
+        this.torque = {
+            x: (Math.cos(angle) * this.force) * (from.y - origin.y),
+            y: (Math.sin(angle) * this.force) * (from.x - origin.x)
+        }
     }
 
     getForce(){ return this.force; }
-    getText(){ return this.force.toFixed(0) + " N"; }
-    getTextPosition(){ return this.txt_pos; }
-};
+    getTorque() { return this.torque; }
 
-/**
- * Floating text that is meant be downsized until it reaches zero
- */
-class FloatingText {
-    constructor(text, txt_pos, disappear_speed = 0.6) {
-        this.text = text;
-        this.txt_pos = txt_pos;
-        this.disappear_speed = disappear_speed;
-        this.size = 23;
+    draw() {
+        drawLineWithArrow(this.from, this.to);
+        drawText(this.text.str, this.text.size, this.text.pos);
     }
-
-    getSize() { return this.size; }
-    decrease() { this.size -= this.disappear_speed; return this.size; }
-    getText() { return this.text; }
-    getTextPosition() { return this.txt_pos; }
 };
