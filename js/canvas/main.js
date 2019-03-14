@@ -1,6 +1,19 @@
 // An array for FloatingText objects
 var drags = new Array();
 
+// Listen for a mouse move
+$("#canvas").mousemove(function(e) {
+    mouse = {x: e.pageX, y: e.pageY};
+});
+
+// Listen for the beginning of a mouse drag
+$("#canvas").mousedown(function(e) {
+    anchor = {x: e.pageX, y: e.pageY};
+    if(drags.length != 0) {
+        drags[drags.length - 1].setDrawComponents(false);
+    }
+});
+
 // Listen for the ending of a mouse drag
 $("#canvas").mouseup(function(e) {
     // applyForce(force, object);

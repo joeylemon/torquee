@@ -18,7 +18,7 @@ function distance(p1, p2) {
  * @param {number} dist The distance
  */
 function getDragForce(dist) {
-    return Math.pow(dist / 20, 2);
+    return dist / 8;
 }
 
 /**

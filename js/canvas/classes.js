@@ -24,23 +24,28 @@ class Drag {
         }
 
         this.torque = {
-            x: this.components.x * (from.y - origin.y),
-            y: this.components.y * (from.x - origin.x)
+            x: this.components.x * (from.y - centPage.y),
+            y: this.components.y * (from.x - centPage.x)
         }
+
+        this.draw_components = true;
     }
 
     getForce(){ return this.force; }
     getTorque() { return this.torque; }
+    setDrawComponents(bool) { this.draw_components = bool; }
 
     draw() {
-        setDrawColor("rgba(88,89,91,0.4)");
-        drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
-        drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
+        if(this.draw_components){
+            setDrawColor("rgba(88,89,91,0.4)");
+            drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
+            drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
 
-        if(Math.abs(this.components.x) > 20) this.component_text.x.draw();
-        if(Math.abs(this.components.y) > 25) this.component_text.y.draw();
+            if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
+            if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
 
-        resetDrawColor();
+            resetDrawColor();
+        }
 
         drawLineWithArrow(this.from, this.to, 7);
         drawText(this.force.toFixed(0) + " N", 23, this.text_pos);
