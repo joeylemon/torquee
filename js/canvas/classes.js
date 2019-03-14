@@ -8,15 +8,11 @@ class Drag {
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
+        this.quadrant = getQuadrant(this.angle);
 
-        console.log(this.angle * (180 / Math.PI));
-        var pos = {x: to.x + 15, y: to.y - 20};
-        if(this.angle > 0 && this.angle <= 90) {
-            console.log("1");
-            pos = {x: to.x + 40, y: to.y};
-        }else if(this.angle > 90 && this.angle <= 180) {
-            console.log("2");
-            pos = {x: to.x - 40, y: to.y};
+        var pos = {x: to.x, y: to.y - 18};
+        if(this.quadrant == 1 || this.quadrant == 2) {
+            pos = {x: to.x, y: to.y + 35};
         }
         this.text = {
             size: 23,
@@ -34,15 +30,26 @@ class Drag {
     getTorque() { return this.torque; }
 
     draw() {
-        setDrawColor("rgba(88,89,91,1)");
+        setDrawColor("rgba(88,89,91,0.4)");
         drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
         drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
-        resetDrawColor();
 
-        drawText("544cos(x) = 54 N", 20, {
+        var x_text_loc = {
             x: this.from.x + ((this.to.x - this.from.x)/2), 
-            y: this.from.y + 18
-        });
+            y: this.from.y + (this.quadrant > 2 ? 18 : -10)
+        };
+        var y_text_loc = {
+            x: this.to.x + (this.quadrant == 1 || this.quadrant == 4 ? 20 : -12), 
+            y: this.to.y - ((this.to.y - this.from.y)/2)
+        };
+
+        drawText(this.force.toFixed(0) + "cos(θ) = " + (this.force * Math.cos(this.angle)).toFixed(0) + " N", 10, x_text_loc);
+
+        rotateCanvas(-Math.PI/2, y_text_loc);
+        drawText(this.force.toFixed(0) + "sin(θ) = " + (this.force * Math.sin(this.angle)).toFixed(0) + " N", 10, {x:0,y:0});
+        unrotateCanvas();
+
+        resetDrawColor();
 
         drawLineWithArrow(this.from, this.to, 7);
         drawText(this.text.str, this.text.size, this.text.pos);

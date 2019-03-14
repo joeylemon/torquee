@@ -160,3 +160,26 @@ function resetDrawColor() {
     ctx.fillStyle = default_color;
     ctx.strokeStyle = default_color;
 }
+
+function rotateCanvas(angle, draw_loc) {
+    ctx.save();
+    ctx.translate(draw_loc.x, draw_loc.y);
+    ctx.rotate(angle);
+}
+
+function unrotateCanvas() {
+    ctx.restore();
+}
+
+function getQuadrant(angle) {
+    var deg_angle = angle * (180 / Math.PI);
+    if(deg_angle >= 0 && deg_angle <= 90) {
+        return 1;
+    }else if(deg_angle > 90 && deg_angle <= 180) {
+        return 2;
+    }else if(deg_angle < -90 && deg_angle >= -180) {
+        return 3;
+    }else if(deg_angle < 0 && deg_angle >= -90) {
+        return 4;
+    }
+}
