@@ -8,6 +8,10 @@ class Drag {
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
+        this.components = {
+            x: this.force * Math.cos(this.angle),
+            y: this.force * Math.sin(this.angle)
+        }
         this.quadrant = getQuadrant(this.angle);
 
         var pos = {x: to.x, y: to.y - 18};
@@ -43,11 +47,15 @@ class Drag {
             y: this.to.y - ((this.to.y - this.from.y)/2)
         };
 
-        drawText(this.force.toFixed(0) + "cos(θ) = " + (this.force * Math.cos(this.angle)).toFixed(0) + " N", 10, x_text_loc);
+        if(Math.abs(this.components.x) > 20) {
+            drawText(this.force.toFixed(0) + "cos(θ) = " + this.components.x.toFixed(0) + " N", 10, x_text_loc);
+        }
 
-        rotateCanvas(-Math.PI/2, y_text_loc);
-        drawText(this.force.toFixed(0) + "sin(θ) = " + (this.force * Math.sin(this.angle)).toFixed(0) + " N", 10, {x:0,y:0});
-        unrotateCanvas();
+        if(Math.abs(this.components.y) > 25) {
+            rotateCanvas(-Math.PI/2, y_text_loc);
+            drawText(this.force.toFixed(0) + "sin(θ) = " + this.components.y.toFixed(0) + " N", 10, {x:0,y:0});
+            unrotateCanvas();
+        }
 
         resetDrawColor();
 
