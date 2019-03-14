@@ -64,18 +64,28 @@ function drawText(str, size, pos) {
 }
 
 /**
- * Draw a line with an arrow head
+ * Draw a dashed line
  * 
  * @param {Object} from The origin coordinates
- * @param {Objeect} to The destination coordinates
+ * @param {Object} to The destination coordinates
  */
-function drawLineWithArrow(from, to) {
+function drawDashedLine(from, to) {
     ctx.beginPath();
     ctx.setLineDash([5, 15]);
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
     ctx.lineWidth = 7;
     ctx.stroke();
+}
+
+/**
+ * Draw a line with an arrow head
+ * 
+ * @param {Object} from The origin coordinates
+ * @param {Object} to The destination coordinates
+ */
+function drawLineWithArrow(from, to) {
+    this.drawDashedLine(from, to);
     drawArrowhead(ctx, from, to, 10);
 }
 
@@ -118,23 +128,4 @@ function drawArrowhead(context, from, to, radius) {
     context.closePath();
 
     context.fill();
-}
-
-function calcTorque(origin,from,to,mag){
-	var angle;
-	var tX;
-	var tY;
-	var fmtStr;
-	
-	angle = Math.atan2(to.y - from.y, to.x - from.x);
-	tX = (Math.cos(angle) * mag) * (from.y - origin.y);
-	tY = (Math.sin(angle) * mag) * (from.x - origin.x);
-	
-	fmtStr = " Torque X component: " + Math.floor(tX) + " Nm\r";
-	drawText(fmtStr, 23, centPage);
-	
-	centPage.y += 23;
-	fmtStr = " Torque Y component: " + Math.floor(tY) + " Nm\r";
-	drawText(fmtStr, 23, centPage);
-	centPage.y -= 23;
 }
