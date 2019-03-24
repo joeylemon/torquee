@@ -140,6 +140,32 @@ function drawArrowhead(context, from, to, radius) {
 
     context.fill();
 }
+/**
+ * Get the location for angle text
+ * 
+ * @param {number} quadrant 
+ * @param {number} angle 
+ * @param {Object} origin 
+ */
+function getAngleTextLocation(quadrant, angle, origin) {
+    var padding = (90 - angle)/1.4 + 10;
+    var angle_loc;
+    switch(quadrant) {
+        case 1:
+            angle_loc = {x: origin.x + padding, y: origin.y + 15};
+            break;
+        case 2:
+            angle_loc = {x: origin.x - padding, y: origin.y + 15};
+            break;
+        case 3:
+            angle_loc = {x: origin.x - padding, y: origin.y - 5};
+            break;
+        case 4:
+            angle_loc = {x: origin.x + padding, y: origin.y - 5};
+            break;
+    }
+    return angle_loc;
+}
 
 function setDrawColor(color) {
     ctx.fillStyle = color;

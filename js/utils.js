@@ -29,3 +29,13 @@ function getDragForce(dist) {
 function radToDeg(radians) {
     return radians * (180 / Math.PI);
 }
+
+function getNetTorque(loc) {
+    var net = {x: 0, y: 0};
+    for(var i = 0; i < drags.length; i++) {
+        var drag = drags[i];
+        net.x += drag.getTorque(loc).x;
+        net.y += drag.getTorque(loc).y;
+    }
+    return net;
+}

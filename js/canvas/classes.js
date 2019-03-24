@@ -8,6 +8,7 @@ class Drag {
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
+        this.deg_angle = radToDeg(Math.atan2(Math.abs(to.y - from.y), Math.abs(to.x - from.x)));
         this.quadrant = getQuadrant(this.angle);
         this.components = {
             x: this.force * Math.cos(this.angle),
@@ -23,23 +24,27 @@ class Drag {
             this.text_pos = {x: to.x, y: to.y + 35};
         }
 
-        this.torque = {
-            x: this.components.x * (from.y - centPage.y),
-            y: this.components.y * (from.x - centPage.x)
-        }
-
         this.draw_components = true;
     }
 
     getForce(){ return this.force; }
-    getTorque() { return this.torque; }
     setDrawComponents(bool) { this.draw_components = bool; }
+    getTorque(loc) { 
+        return {
+            x: this.components.x * (this.from.y - loc.y),
+            y: this.components.y * (this.from.x - loc.x)
+        }
+    }
 
     draw() {
         if(this.draw_components){
             setDrawColor("rgba(88,89,91,0.4)");
             drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
             drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
+
+            if(this.deg_angle >= 15 && this.deg_angle <= 80 && (Math.abs(this.components.x) > 10 || Math.abs(this.components.y) > 10)) {
+                drawText(this.deg_angle.toFixed(0) + "°", 15, getAngleTextLocation(this.quadrant, this.deg_angle, this.from));
+            }
 
             if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
             if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
