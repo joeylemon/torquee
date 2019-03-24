@@ -44,6 +44,10 @@ function draw() {
 		//calcTorque(centPage,anchor,mouse,drag.getForce());
     }
 
+    ctx.rect(200, 200, 5, 5);
+    ctx.fill();
+    drawText("(200,200)", 12, {x:202,y:220});
+
     // Request the next frame to be drawn
     window.requestAnimationFrame(draw);
 }

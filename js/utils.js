@@ -30,12 +30,21 @@ function radToDeg(radians) {
     return radians * (180 / Math.PI);
 }
 
+/**
+ * Convert pixels to meters (1 grid on screen)
+ * 
+ * @param {number} pixels The amount of pixels
+ */
+function pixelsToMeters(pixels) {
+    return pixels / 40;
+}
+
 function getNetTorque(loc) {
     var net = {x: 0, y: 0};
     for(var i = 0; i < drags.length; i++) {
-        var drag = drags[i];
-        net.x += drag.getTorque(loc).x;
-        net.y += drag.getTorque(loc).y;
+        var torque = drags[i].getTorque(loc);
+        net.x += torque.x;
+        net.y += torque.y;
     }
     return net;
 }

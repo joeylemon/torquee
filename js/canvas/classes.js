@@ -31,8 +31,8 @@ class Drag {
     setDrawComponents(bool) { this.draw_components = bool; }
     getTorque(loc) { 
         return {
-            x: this.components.x * (this.from.y - loc.y),
-            y: this.components.y * (this.from.x - loc.x)
+            x: this.components.x * pixelsToMeters(this.from.y - loc.y),
+            y: this.components.y * pixelsToMeters(this.from.x - loc.x)
         }
     }
 
