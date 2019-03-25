@@ -39,12 +39,46 @@ function pixelsToMeters(pixels) {
     return pixels / 40;
 }
 
+/**
+ * Convert newton-meters to foot-pounds
+ * 
+ * @param {number} nm The amount of newton meters
+ */
+function nmToFtlb(nm) {
+    return nm * 0.73756;
+}
+
+/**
+ * Get the sign of a torque
+ * 
+ * @param {Object} comp The component value (X or Y)
+ * @param {number} val The value of the component
+ * @param {Object} from The origin of the force
+ * @param {Object} loc The location to get torque about
+ */
+function getTorqueSign(comp, val, from, loc) {
+    var positive = (val > 0 ? false : true);
+    if(comp == Component.Y) {
+        var left = (loc.x - from.x > 0 ? true : false);
+        if((positive && left) || (!positive && !left)){
+            return -1;
+        }
+    }else if(comp == Component.X) {
+        var below = (loc.y - from.y > 0 ? true : false);
+        if((positive && !below) || (!positive && below)){
+            return -1;
+        }
+    }
+
+    return 1;
+}
+
 function getNetTorque(loc) {
-    var net = {x: 0, y: 0};
+    var net = 0;
     for(var i = 0; i < drags.length; i++) {
         var torque = drags[i].getTorque(loc);
-        net.x += torque.x;
-        net.y += torque.y;
+        net += torque.x;
+        net += torque.y;
     }
     return net;
 }

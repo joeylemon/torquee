@@ -50,8 +50,8 @@ var centPage = {x: canvas.width / 2, y: canvas.height / 2};
  * @param {number} size The size of the text
  * @param {Object} pos The location to draw at
  */
-function drawText(str, size, pos) {
-    ctx.font = size + "px profont";
+function drawText(str, size, pos, font="profont") {
+    ctx.font = size + "px " + font;
     ctx.fillText(str, pos.x, pos.y);
 }
 

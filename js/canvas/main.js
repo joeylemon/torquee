@@ -30,23 +30,24 @@ $("#canvas").mouseup(function(e) {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw all floating texts
+    // Draw all drags
     for(var i = 0; i < drags.length; i++) {
         var drag = drags[i];
         drag.draw();
     }
 
     // Draw an arrow if the user is currently dragging
-	// Also begin torque calculation
     if(anchor){
         getDrag().draw();
-		
-		//calcTorque(centPage,anchor,mouse,drag.getForce());
     }
 
+    // Draw a dot for a point of reference
+    // Temporary: for debugging
     ctx.rect(200, 200, 5, 5);
     ctx.fill();
     drawText("(200,200)", 12, {x:202,y:220});
+
+    drawText(getNetTorque({x:200,y:200}).toFixed(0) + " Nm", 23, {x:65, y:140}, "lemon");
 
     // Request the next frame to be drawn
     window.requestAnimationFrame(draw);

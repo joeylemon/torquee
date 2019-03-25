@@ -20,22 +20,28 @@ class Drag {
         }
 
         this.text_pos = {x: to.x, y: to.y - 18};
-        if(this.quadrant == 1 || this.quadrant == 2) {
-            this.text_pos = {x: to.x, y: to.y + 35};
-        }
+        if(this.quadrant <= 2) this.text_pos = {x: to.x, y: to.y + 35};
 
         this.draw_components = true;
     }
 
     getForce(){ return this.force; }
     setDrawComponents(bool) { this.draw_components = bool; }
+
+    /**
+     * Get the torque about a location
+     * @param {Object} loc The location coordinates
+     */
     getTorque(loc) { 
         return {
-            x: this.components.x * pixelsToMeters(this.from.y - loc.y),
-            y: this.components.y * pixelsToMeters(this.from.x - loc.x)
+            x: Math.abs(this.components.x * pixelsToMeters(this.from.y - loc.y)) * getTorqueSign(Component.X, this.components.x, this.from, loc),
+            y: Math.abs(this.components.y * pixelsToMeters(this.from.x - loc.x)) * getTorqueSign(Component.Y, this.components.y, this.from, loc)
         }
     }
 
+    /**
+     * Draw the drag arrow, force, and components
+     */
     draw() {
         if(this.draw_components){
             setDrawColor("rgba(88,89,91,0.4)");
