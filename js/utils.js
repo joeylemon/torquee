@@ -49,6 +49,23 @@ function nmToFtlb(nm) {
 }
 
 /**
+ * Get the starting angle for an arc to be drawn in a quadrant
+ * 
+ * @param {number} quadrant The quadrant of the angle
+ */
+function getStartingAngleForQuadrant(quadrant) {
+    if(quadrant == 4) {
+        return 0;
+    }else if(quadrant == 3) {
+        return Math.PI;
+    }else if(quadrant == 2) {
+        return Math.PI;
+    }else if(quadrant == 1) {
+        return 0;
+    }
+}
+
+/**
  * Get the sign of a torque
  * 
  * @param {Object} comp The component value (X or Y)
@@ -73,6 +90,11 @@ function getTorqueSign(comp, val, from, loc) {
     return 1;
 }
 
+/**
+ * Get the net torque about a location by totaling all drags
+ * 
+ * @param {Object} loc The location to get net torque about
+ */
 function getNetTorque(loc) {
     var net = 0;
     for(var i = 0; i < drags.length; i++) {

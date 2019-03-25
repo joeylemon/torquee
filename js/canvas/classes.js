@@ -48,10 +48,25 @@ class Drag {
             drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
             drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
 
-            if(this.deg_angle >= 15 && this.deg_angle <= 80 && (Math.abs(this.components.x) > 10 || Math.abs(this.components.y) > 10)) {
-                drawText(this.deg_angle.toFixed(0) + "°", 15, getAngleTextLocation(this.quadrant, this.deg_angle, this.from));
+            // Draw the angle text
+            var angle_loc = getAngleTextLocation(this.quadrant, this.deg_angle, this.from);
+            if(this.deg_angle >= 15 && this.deg_angle <= 80 && Math.abs(this.components.x) > 6 && Math.abs(this.components.y) > 3) {
+                drawText(this.deg_angle.toFixed(0) + "°", 12, angle_loc);
             }
 
+            // Draw the angle arc
+            if(Math.abs(this.components.x) > 3) {
+                var start_angle = getStartingAngleForQuadrant(this.quadrant);
+                ctx.beginPath();
+                if(this.quadrant == 4 || this.quadrant == 2) {
+                    ctx.arc(this.from.x, this.from.y, 25, start_angle, this.angle, true);
+                }else{
+                    ctx.arc(this.from.x, this.from.y, 25, start_angle, this.angle, false);
+                }
+                ctx.stroke();
+            }
+
+            // Draw component texts
             if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
             if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
 

@@ -86,6 +86,7 @@ function drawDashedLine(from, to, width, dash = [5, 15]) {
     ctx.lineTo(to.x, to.y);
     ctx.lineWidth = width;
     ctx.stroke();
+    ctx.setLineDash([]);
 }
 
 /**
@@ -148,20 +149,19 @@ function drawArrowhead(context, from, to, radius) {
  * @param {Object} origin 
  */
 function getAngleTextLocation(quadrant, angle, origin) {
-    var padding = (90 - angle)/1.4 + 10;
     var angle_loc;
     switch(quadrant) {
         case 1:
-            angle_loc = {x: origin.x + padding, y: origin.y + 15};
+            angle_loc = {x: origin.x + 40, y: origin.y + 14};
             break;
         case 2:
-            angle_loc = {x: origin.x - padding, y: origin.y + 15};
+            angle_loc = {x: origin.x - 40, y: origin.y + 14};
             break;
         case 3:
-            angle_loc = {x: origin.x - padding, y: origin.y - 5};
+            angle_loc = {x: origin.x - 40, y: origin.y - 6};
             break;
         case 4:
-            angle_loc = {x: origin.x + padding, y: origin.y - 5};
+            angle_loc = {x: origin.x + 40, y: origin.y - 6};
             break;
     }
     return angle_loc;
