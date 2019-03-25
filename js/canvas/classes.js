@@ -8,20 +8,31 @@ class Drag {
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
+
+        // Convert angle to radians, and keep it between 0-90
         this.deg_angle = radToDeg(Math.atan2(Math.abs(to.y - from.y), Math.abs(to.x - from.x)));
+
         this.quadrant = getQuadrant(this.angle);
+
+        // Find the force components
         this.components = {
             x: this.force * Math.cos(this.angle),
             y: this.force * Math.sin(this.angle)
         }
+
+        // Initialize all drawing locations in constructor to save processing
+        // when drag is drawn
         this.component_text = {
             x: new ComponentText(Component.X, from, to, this.force, this.quadrant, this.components),
             y: new ComponentText(Component.Y, from, to, this.force, this.quadrant, this.components),
         }
+        this.angle_loc = getAngleTextLocation(this.quadrant, this.deg_angle, this.from);
+        this.start_angle = getStartingAngleForQuadrant(this.quadrant);
 
         this.text_pos = {x: to.x, y: to.y - 18};
         if(this.quadrant <= 2) this.text_pos = {x: to.x, y: to.y + 35};
 
+        // This gets set to false once user has started a new drag
         this.draw_components = true;
     }
 
@@ -45,23 +56,19 @@ class Drag {
     draw() {
         if(this.draw_components){
             setDrawColor("rgba(88,89,91,0.4)");
-            drawDashedLine(this.from, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
-            drawDashedLine(this.to, {x: this.to.x, y: this.from.y}, 5, [10, 20]);
+            drawDashedLineWithArrow(this.from, {x: this.to.x, y: this.from.y}, 5);
+            drawDashedLineWithArrow(this.from, {x: this.from.x, y: this.to.y}, 5);
 
-            // Draw the angle text
-            var angle_loc = getAngleTextLocation(this.quadrant, this.deg_angle, this.from);
-            if(this.deg_angle >= 15 && this.deg_angle <= 80 && Math.abs(this.components.x) > 6 && Math.abs(this.components.y) > 3) {
-                drawText(this.deg_angle.toFixed(0) + "°", 12, angle_loc);
-            }
+            if(this.deg_angle > 3) {
+                // Draw the angle text
+                drawText(this.deg_angle.toFixed(0) + "°", 12, this.angle_loc);
 
-            // Draw the angle arc
-            if(Math.abs(this.components.x) > 3) {
-                var start_angle = getStartingAngleForQuadrant(this.quadrant);
+                // Draw the angle arc
                 ctx.beginPath();
                 if(this.quadrant == 4 || this.quadrant == 2) {
-                    ctx.arc(this.from.x, this.from.y, 25, start_angle, this.angle, true);
+                    ctx.arc(this.from.x, this.from.y, 25, this.start_angle, this.angle, true);
                 }else{
-                    ctx.arc(this.from.x, this.from.y, 25, start_angle, this.angle, false);
+                    ctx.arc(this.from.x, this.from.y, 25, this.start_angle, this.angle, false);
                 }
                 ctx.stroke();
             }
@@ -70,10 +77,30 @@ class Drag {
             if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
             if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
 
+            // Draw distance lines from last added shape
+            setDrawColor("rgba(220,130,0,0.4)");
+            if(this.force > 0) {
+                var loc = shapes[shapes.length - 1];
+                var x_dist = Math.abs(pixelsToMeters(this.from.x - loc.x));
+                var y_dist = Math.abs(pixelsToMeters(this.from.y - loc.y));
+                
+                if(x_dist > 0.5) {
+                    drawSolidLine(loc, {x: this.from.x, y: loc.y});
+                    drawText(x_dist.toFixed(1) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
+                }
+
+                if(y_dist > 0.5) {
+                    drawSolidLine(loc, {x: loc.x, y: this.from.y});
+                    rotateCanvas(-Math.PI/2, {x: loc.x - 7, y: loc.y + ((this.from.y - loc.y)/2)});
+                    drawText(y_dist.toFixed(1) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", y_dist < 2 ? 9 : 15, {x:0,y:0});
+                    unrotateCanvas();
+                }
+            }
+
             resetDrawColor();
         }
 
-        if(this.force < 0.5){
+        if(this.force < 1){
             drawSolidLine(this.from, this.to, 7);
             return;
         }
@@ -104,7 +131,7 @@ class ComponentText {
             };
         }else if(component == Component.Y) {
             this.loc = {
-                x: this.to.x + (this.quadrant == 1 || this.quadrant == 4 ? 20 : -12), 
+                x: this.from.x + (this.quadrant == 2 || this.quadrant == 3 ? 20 : -12), 
                 y: this.to.y - ((this.to.y - this.from.y)/2)
             };
         }

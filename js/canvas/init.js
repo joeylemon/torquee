@@ -26,7 +26,9 @@ createHiDPICanvas = function (w, h, ratio) {
 }
 
 // Initialize the canvas and context
-var canvas = createHiDPICanvas($("#canvas").width(), $("#canvas").height());
+var width = $("#canvas").width();
+var height = $("#canvas").height();
+var canvas = createHiDPICanvas(width, height);
 var ctx = canvas.getContext("2d");
 var default_color = "#000";
 ctx.translate(0.5, 0.5);
@@ -79,13 +81,34 @@ function drawSolidLine(from, to, width) {
  * @param {number} width The width of the line
  * @param {Array} dash The dashing of the line [<length>, <spacing>] 
  */
-function drawDashedLine(from, to, width, dash = [5, 15]) {
+function drawDashedLine(from, to, width, dash = [10, 20]) {
     ctx.beginPath();
     ctx.setLineDash(dash);
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
     ctx.lineWidth = width;
     ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+/**
+ * Draw a dashed line with an arrow head
+ * 
+ * @param {Object} from The origin coordinates
+ * @param {Object} to The destination coordinates
+ * @param {number} width The width of the line
+ * @param {Array} dash The dashing of the line [<length>, <spacing>] 
+ */
+function drawDashedLineWithArrow(from, to, width, dash = [10, 20]) {
+    ctx.beginPath();
+    ctx.setLineDash(dash);
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.lineWidth = width;
+    ctx.stroke();
+    if(distance(from, to) > 10) {
+        drawArrowhead(ctx, from, to, 10);
+    }
     ctx.setLineDash([]);
 }
 
@@ -167,35 +190,39 @@ function getAngleTextLocation(quadrant, angle, origin) {
     return angle_loc;
 }
 
+/**
+ * Set the canvas drawing color
+ * 
+ * @param {string} color The hex color to draw
+ */
 function setDrawColor(color) {
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
 }
 
+/**
+ * Reset the drawing color to the default color
+ */
 function resetDrawColor() {
     ctx.fillStyle = default_color;
     ctx.strokeStyle = default_color;
 }
 
+/**
+ * Rotate the canvas drawing
+ * 
+ * @param {number} angle The angle
+ * @param {Object} draw_loc The location that will be drawn at (must draw desired object at 0, 0)
+ */
 function rotateCanvas(angle, draw_loc) {
     ctx.save();
     ctx.translate(draw_loc.x, draw_loc.y);
     ctx.rotate(angle);
 }
 
+/**
+ * Reset the canvas to normal rotation
+ */
 function unrotateCanvas() {
     ctx.restore();
-}
-
-function getQuadrant(angle) {
-    var deg_angle = angle * (180 / Math.PI);
-    if(deg_angle >= 0 && deg_angle <= 90) {
-        return 1;
-    }else if(deg_angle > 90 && deg_angle <= 180) {
-        return 2;
-    }else if(deg_angle < -90 && deg_angle >= -180) {
-        return 3;
-    }else if(deg_angle < 0 && deg_angle >= -90) {
-        return 4;
-    }
 }

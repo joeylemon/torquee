@@ -31,6 +31,25 @@ function radToDeg(radians) {
 }
 
 /**
+ * Get the quadrant of an angle
+ * Quadrants are in reverse order (4 is actually 1, 1 is actually 4)
+ * 
+ * @param {number} angle The angle to get quadrant of
+ */
+function getQuadrant(angle) {
+    var deg_angle = angle * (180 / Math.PI);
+    if(deg_angle >= 0 && deg_angle <= 90) {
+        return 1;
+    }else if(deg_angle > 90 && deg_angle <= 180) {
+        return 2;
+    }else if(deg_angle < -90 && deg_angle >= -180) {
+        return 3;
+    }else if(deg_angle < 0 && deg_angle >= -90) {
+        return 4;
+    }
+}
+
+/**
  * Convert pixels to meters (1 grid on screen)
  * 
  * @param {number} pixels The amount of pixels
@@ -102,5 +121,12 @@ function getNetTorque(loc) {
         net += torque.x;
         net += torque.y;
     }
+
+    if(anchor) {
+        var torque = getDrag().getTorque(loc);
+        net += torque.x;
+        net += torque.y;
+    }
+    
     return net;
 }

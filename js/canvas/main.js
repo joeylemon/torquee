@@ -1,5 +1,7 @@
 // An array for FloatingText objects
 var drags = new Array();
+var shapes = new Array();
+shapes.push({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)});
 
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
@@ -24,6 +26,13 @@ $("#canvas").mouseup(function(e) {
     anchor = undefined;
 });
 
+// Listen for a mouse move
+$("#canvas").contextmenu(function(e) {
+    shapes.push({x: e.pageX, y: e.pageY});
+    e.preventDefault();
+    return false;
+});
+
 /**
  * The draw function; called many times a second
  */
@@ -36,18 +45,19 @@ function draw() {
         drag.draw();
     }
 
-    // Draw an arrow if the user is currently dragging
+    // Draw the current drag if user is still dragging
     if(anchor){
         getDrag().draw();
     }
 
     // Draw a dot for a point of reference
     // Temporary: for debugging
-    ctx.rect(200, 200, 5, 5);
-    ctx.fill();
-    drawText("(200,200)", 12, {x:202,y:220});
-
-    drawText(getNetTorque({x:200,y:200}).toFixed(0) + " Nm", 23, {x:65, y:140}, "lemon");
+    for(var i = 0; i < shapes.length; i++) {
+        var shape = shapes[i];
+        ctx.rect(shape.x - 3, shape.y - 3, 6, 6);
+        ctx.fill();
+        drawText(getNetTorque(shape).toFixed(0) + " Nm", 15, {x:shape.x + 2, y:shape.y + 25}, "lemon");
+    }
 
     // Request the next frame to be drawn
     window.requestAnimationFrame(draw);
