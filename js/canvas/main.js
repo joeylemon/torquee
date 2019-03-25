@@ -26,13 +26,6 @@ $("#canvas").mouseup(function(e) {
     anchor = undefined;
 });
 
-// Listen for a mouse move
-$("#canvas").contextmenu(function(e) {
-    shapes.push({x: e.pageX, y: e.pageY});
-    e.preventDefault();
-    return false;
-});
-
 /**
  * The draw function; called many times a second
  */
