@@ -79,8 +79,8 @@ class Drag {
             }
 
             // Draw component texts
-            if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
-            if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
+            if(Math.abs(this.components.x) > 3) this.component_text.x.draw();
+            if(Math.abs(this.components.y) > 3) this.component_text.y.draw();
 
             // Draw distance lines extending from last added shape
             if(this.force > 0) {
@@ -124,7 +124,7 @@ class Drag {
         }
 
         // If force is small, draw line without an arrowhead
-        if(this.force < 1){
+        if(this.force < 0.5){
             drawSolidLine(this.from, this.to, 7);
             return;
         }

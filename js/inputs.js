@@ -1,6 +1,6 @@
 // Listen for a right click
 $("#canvas").contextmenu(function(e) {
-    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), images[Math.floor(Math.random() * 100 % images.length)]));
+    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), current_shape, getShapeSize()));
     e.preventDefault();
     return false;
 });
@@ -33,6 +33,36 @@ document.getElementById("zoom").oninput = function(e) {
 $("#tool-clear").click(function(e) {
     drags = new Array();
 });
+
+var current_size = "tool-medium";
+$("#tool-small, #tool-medium, #tool-large").click(function(e) {
+    var target = e.target.id;
+    $("#" + current_size).removeClass("active");
+    $("#" + target).addClass("active");
+    current_size = target;
+});
+
+var current_shape = "square";
+$("[id*='tool-shape']").click(function(e) {
+    var target = e.target.id;
+    var shape = target.substring(11);
+    $("#tool-shape-" + current_shape).removeClass("active");
+    $("#" + target).addClass("active");
+    current_shape = shape;
+});
+
+function getShapeSize() {
+    switch(current_size) {
+        case "tool-small":
+            return 20; break;
+        case "tool-medium":
+            return 40; break;
+        case "tool-large":
+            return 55; break;
+        default:
+            return 20;
+    }
+}
 
 // Keep track of if the command button is down
 // May be useful in the future for more controls
