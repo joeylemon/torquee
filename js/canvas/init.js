@@ -223,6 +223,25 @@ function drawArrowhead(context, from, to, radius) {
 
     context.fill();
 }
+
+/**
+ * Draw a bounding box between two points
+ * 
+ * @param {Object} from The start location
+ * @param {Object} to The end location
+ */
+function drawBoundingBox(from, to) {
+    setDrawColor("rgba(0,0,0,0.2)");
+    var rect = new Rect(from, to);
+    ctx.rect(rect.x, rect.y, rect.width, rect.height);
+    ctx.fill();
+    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x + rect.width, y: rect.y}, 3);
+    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x, y: rect.y + rect.height}, 3);
+    drawDashedLine({x: rect.x + rect.width, y: rect.y}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3);
+    drawDashedLine({x: rect.x, y: rect.y + rect.height}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3);
+    resetDrawColor();
+}
+
 /**
  * Get the location for angle text
  * 
@@ -247,13 +266,6 @@ function getAngleTextLocation(quadrant, angle, origin) {
             break;
     }
     return angle_loc;
-}
-
-/**
- * Get the last shape that was added
- */
-function getLastAddedShape() {
-    return shapes[shapes.length - 1];
 }
 
 /**

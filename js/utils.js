@@ -134,11 +134,18 @@ function getNetTorque(loc) {
     }
 
     // Include current drag if it exists
-    if(anchor) {
+    if(anchor && !erasing) {
         var torque = getDrag().getTorque(loc);
         net += torque.x;
         net += torque.y;
     }
 
     return net;
+}
+
+/**
+ * Get the last shape that was added
+ */
+function getLastAddedShape() {
+    return shapes[shapes.length - 1];
 }

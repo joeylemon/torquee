@@ -1,10 +1,15 @@
-// Listen for a right click
+/**
+ * Right click: add shape to canvas
+ */
 $("#canvas").contextmenu(function(e) {
     shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), current_shape, getShapeSize()));
     e.preventDefault();
     return false;
 });
 
+/**
+ * Mousewheel: zoom/pan canvas
+ */
 var cur_zoom = 0;
 $("#canvas").on("mousewheel", function(e) {
     if (e.ctrlKey) {
@@ -24,24 +29,41 @@ $("#canvas").on("mousewheel", function(e) {
     }
 });
 
+/**
+ * Slider: zoom canvas
+ */
 document.getElementById("zoom").value = cur_zoom;
 document.getElementById("zoom").oninput = function(e) {
     cur_zoom = parseFloat(document.getElementById("zoom").value);
     zoom(1 + cur_zoom);
 }
 
+/**
+ * Clear button: clear all objects from canvas
+ */
 $("#tool-clear").click(function(e) {
     drags = new Array();
+    shapes = new Array();
 });
 
-var current_size = "tool-medium";
-$("#tool-small, #tool-medium, #tool-large").click(function(e) {
-    var target = e.target.id;
-    $("#" + current_size).removeClass("active");
-    $("#" + target).addClass("active");
-    current_size = target;
+/**
+ * Erase button: toggle eraser
+ */
+var erasing = false;
+$("#tool-eraser").click(function(e) {
+    erasing = !erasing;
+    if(erasing) {
+        $("#tool-eraser").addClass("active");
+        document.getElementById("canvas").style.cursor = "url(images/eraser_cursor.png), auto";
+    }else{
+        $("#tool-eraser").removeClass("active");
+        document.getElementById("canvas").style.cursor = "auto";
+    }
 });
 
+/**
+ * Shape selection: change the current shape
+ */
 var current_shape = "square";
 $("[id*='tool-shape']").click(function(e) {
     var target = e.target.id;
@@ -51,6 +73,20 @@ $("[id*='tool-shape']").click(function(e) {
     current_shape = shape;
 });
 
+/**
+ * Size button: change the size of newly-added shapes
+ */
+var current_size = "tool-medium";
+$("#tool-small, #tool-medium, #tool-large").click(function(e) {
+    var target = e.target.id;
+    $("#" + current_size).removeClass("active");
+    $("#" + target).addClass("active");
+    current_size = target;
+});
+
+/**
+ * Get the pixel value of the currently-selected size
+ */
 function getShapeSize() {
     switch(current_size) {
         case "tool-small":
@@ -74,10 +110,11 @@ window.onkeydown = function(e) {
         cmd_down = true;
     }
 
-    if(code == 37) move(-20, 0);
-    if(code == 38) move(0, -20);
-    if(code == 39) move(20, 0);
-    if(code == 40) move(0, 20);
+    var dist = 70;
+    if(code == 37) move(-dist, 0);
+    if(code == 38) move(0, -dist);
+    if(code == 39) move(dist, 0);
+    if(code == 40) move(0, dist);
 };
 window.onkeyup = function(e) {
     var code = e.keyCode;

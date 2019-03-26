@@ -5,6 +5,7 @@ class Drag {
     constructor(from, to) {
         this.from = from;
         this.to = to;
+        this.midpoint = {x: (from.x + to.x)/2, y: (from.y + to.y)/2};
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
@@ -83,7 +84,7 @@ class Drag {
             if(Math.abs(this.components.y) > 3) this.component_text.y.draw();
 
             // Draw distance lines extending from last added shape
-            if(this.force > 0) {
+            if(getLastAddedShape() && this.force > 0) {
                 // Set color to transparent orange
                 setDrawColor("rgba(220,130,0,0.4)");
 
@@ -176,7 +177,7 @@ class ComponentText {
 };
 
 // Load in all images in draw_shapes dictionary
-var images = ["square", "circle", "triangle"];
+var images = ["square", "circle", "triangle", "schleter"];
 var draw_shapes = {};
 for(var i = 0; i < images.length; i++) {
     var img_name = images[i];
@@ -228,5 +229,19 @@ class Shape {
         ctx.drawImage(this.img, -this.size/2, -this.size/2, this.size, this.size);
         unrotateCanvas();
         drawText(this.getTorque().toFixed(0) + " Nm", 12, {x: this.loc.x, y: this.center.y + this.size + 13}, "profont");
+    }
+};
+
+class Rect {
+    constructor(from, to) {
+        this.x = from.x < to.x ? from.x : to.x;
+        this.y = from.y < to.y ? from.y : to.y;
+        this.width = Math.abs(from.x - to.x);
+        this.height = Math.abs(from.y - to.y);
+    }
+
+    contains(loc) {
+        return this.x <= loc.x && loc.x <= this.x + this.width &&
+               this.y <= loc.y && loc.y <= this.y + this.height;
     }
 };

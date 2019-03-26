@@ -180,6 +180,12 @@ body {
     transform: scale(0.9, 0.9);
 }
 
+.toolbox .delete .active {
+    color: #fff;
+    background-color: #57b755;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
 .toolbox button img {
     width: 14px;
     position: relative;
@@ -202,10 +208,11 @@ body {
     transform: scale(1.1,1.1);
     box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
     color: #fff;
+    background-color: #57b755;
 }
 
 .toolbox .shapes {
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .toolbox .shapes .active {

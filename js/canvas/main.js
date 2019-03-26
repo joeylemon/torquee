@@ -10,7 +10,8 @@ $("#canvas").mousemove(function(e) {
 
 // Listen for the beginning of a mouse drag
 $("#canvas").mousedown(function(e) {
-    anchor = getDrawPosition({x: e.pageX, y: e.pageY});
+    var loc = {x: e.pageX, y: e.pageY};
+    anchor = getDrawPosition(loc);
     if(drags.length != 0) {
         drags[drags.length - 1].setDrawComponents(false);
     }
@@ -18,10 +19,26 @@ $("#canvas").mousedown(function(e) {
 
 // Listen for the ending of a mouse drag
 $("#canvas").mouseup(function(e) {
-    // applyForce(force, object);
-    var drag = getDrag();
-    if(drag.force > 0.5) {
-        drags.push(drag);
+    if(!anchor){ return; }
+
+    if(!erasing) {
+        var drag = getDrag();
+        if(drag.force > 0.5) {
+            drags.push(drag);
+        }
+    }else{
+        var rect = new Rect(anchor, mouse);
+        for(var i = shapes.length - 1; i >= 0; --i) {
+            if(rect.contains(shapes[i].center)) {
+                shapes.splice(i, 1);
+            }
+        }
+        for(var i = drags.length - 1; i >= 0; --i) {
+            var drag = drags[i];
+            if(rect.contains(drag.midpoint) || rect.contains(drag.from) || rect.contains(drag.to)) {
+                drags.splice(i, 1);
+            }
+        }
     }
     anchor = undefined;
 });
@@ -39,7 +56,11 @@ function draw() {
 
     // Draw the current drag if user is still dragging
     if(anchor){
-        getDrag().draw();
+        if(!erasing) {
+            getDrag().draw();
+        }else{
+            drawBoundingBox(anchor, mouse);
+        }
     }
 
     drawAllElements(shapes);

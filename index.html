@@ -56,11 +56,18 @@
 
     <div class="toolbox">
         <input class="slider" type="range" id="zoom" min="-0.4" max="2" step="0.1" defaultValue="0.8">
-        <button id="tool-clear">Clear</button>
-        <button id="tool-eraser"><img src="images/eraser.png">Eraser</button>
+        <div class="delete">
+            <button id="tool-clear">Clear</button>
+            <button id="tool-eraser"><img src="images/eraser.png">Eraser</button>
+        </div>
         <div class="shapes">
             <img class="active" id="tool-shape-square" src="images/square.png">
             <img id="tool-shape-circle" src="images/circle.png">
+            <img id="tool-shape-triangle" src="images/triangle.png">
+        </div>
+        <div class="shapes">
+            <img id="tool-shape-schleter" src="images/schleter.png">
+            <img id="tool-shape-triangle" src="images/triangle.png">
             <img id="tool-shape-triangle" src="images/triangle.png">
         </div>
         <div class="sizes">
