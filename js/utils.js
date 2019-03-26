@@ -27,7 +27,7 @@ function getDrawPosition(loc) {
  * @param {number} dist The distance
  */
 function getDragForce(dist) {
-    return dist / 8;
+    return dist / 16;
 }
 
 /**

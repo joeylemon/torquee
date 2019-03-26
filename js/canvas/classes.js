@@ -176,7 +176,7 @@ class ComponentText {
 };
 
 // Load in all images in draw_shapes dictionary
-var images = ["square"];
+var images = ["square", "circle", "triangle"];
 var draw_shapes = {};
 for(var i = 0; i < images.length; i++) {
     var img_name = images[i];
@@ -189,14 +189,44 @@ for(var i = 0; i < images.length; i++) {
  * Draws a shape onto the canvas
  */
 class Shape {
-    constructor(loc, shape) {
+    constructor(loc, shape, size=20) {
         this.loc = loc;
         this.img = draw_shapes[shape];
-        this.size = 20;
+        this.size = size;
+        this.mom_inertia = this.size * 500;
+        this.center = {x: this.loc.x - (this.size/2), y: this.loc.y - (this.size/2)};
+        this.rotation = 0;
+        this.last_rotation = 0;
+    }
+
+    getTorque() { return getNetTorque(this.loc); }
+
+    getAngularVelocity() { return -this.getTorque() / this.mom_inertia }
+
+    /**
+     * Take into account the time since last rotation
+     * to follow the velocity
+     */
+    getAmountToRotate() {
+        var time = Date.now() - this.last_rotation;
+        return this.getAngularVelocity() * time;
+    }
+
+    /**
+     * Rotate the shape
+     * 
+     * @param {number} rads The radians to rotate by
+     */
+    rotate(rads) {
+        this.rotation = (this.rotation + rads) % (2 * Math.PI);
+        this.last_rotation = Date.now();
     }
 
     draw() {
-        ctx.drawImage(draw_shapes.square, this.loc.x - (this.size/2), this.loc.y - (this.size/2), this.size, this.size);
-        drawText(getNetTorque(this.loc).toFixed(0) + " Nm", 15, {x:this.loc.x + 2, y:this.loc.y + 25}, "lemon");
+        this.rotate(this.getAmountToRotate());
+        rotateCanvas(this.rotation, this.loc);
+        ctx.drawImage(this.img, -this.size/2, -this.size/2, this.size, this.size);
+        unrotateCanvas();
+        drawText(this.getTorque().toFixed(0) + " Nm", 12, {x: this.loc.x, y: this.center.y + this.size + 13}, "profont");
     }
 };

@@ -1,6 +1,6 @@
 // Listen for a right click
 $("#canvas").contextmenu(function(e) {
-    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}, "square")));
+    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), images[Math.floor(Math.random() * 100 % images.length)]));
     e.preventDefault();
     return false;
 });

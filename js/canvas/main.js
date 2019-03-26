@@ -1,7 +1,7 @@
 // An array for FloatingText objects
 var drags = new Array();
 var shapes = new Array();
-shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}, "square"));
+shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}, "square", 50));
 
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
