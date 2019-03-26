@@ -63,16 +63,17 @@ var mouse = {x: 0, y: 0};
  * @param {number} zoom The new scale of the canvas (normal zoom = 1)
  */
 function zoom(zoom) {
-    // For some reason, we have to return to no translation or else zooming
-    // will mess up dragging. A fix for another day?
+    // For some reason we have to untranslate canvas before zooming
     ctx.translate(-translation.x, -translation.y);
-    translation = {x: 0, y: 0};
 
     // Scale back to normal by scaling the recriprocal of current
     ctx.scale(1/scale, 1/scale);
 
     scale = zoom;
     ctx.scale(scale, scale);
+
+    // Return to previous translation
+    ctx.translate(translation.x, translation.y);
 }
 
 /**
