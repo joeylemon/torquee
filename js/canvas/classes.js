@@ -175,18 +175,28 @@ class ComponentText {
     }
 };
 
-const square = new Image();
-square.src = 'images/square.png';
+// Load in all images in draw_shapes dictionary
+var images = ["square"];
+var draw_shapes = {};
+for(var i = 0; i < images.length; i++) {
+    var img_name = images[i];
+    var img = new Image();
+    img.src = 'images/' + img_name + '.png';
+    draw_shapes[img_name] = img;
+}
 
+/**
+ * Draws a shape onto the canvas
+ */
 class Shape {
-    constructor(loc, img) {
+    constructor(loc, shape) {
         this.loc = loc;
-        this.img = img;
-        this.size = 40;
+        this.img = draw_shapes[shape];
+        this.size = 20;
     }
 
     draw() {
-        ctx.drawImage(square, this.loc.x - (this.size/2), this.loc.y - (this.size/2), 40, 40);
+        ctx.drawImage(draw_shapes.square, this.loc.x - (this.size/2), this.loc.y - (this.size/2), this.size, this.size);
         drawText(getNetTorque(this.loc).toFixed(0) + " Nm", 15, {x:this.loc.x + 2, y:this.loc.y + 25}, "lemon");
     }
 };
