@@ -37,13 +37,59 @@ ctx.textAlign = "center";
 ctx.fillStyle = default_color;
 ctx.strokeStyle = default_color;
 
+var center = {x: width/2, y:height/2};
+
+var scale = 1;
+var last_scale = 0;
+ctx.scale(scale, scale);
+
+var translation = {x: 0, y: 0};
+
 // The anchor for a mouse drag
 var anchor;
 
 // The current mouse position
 var mouse = {x: 0, y: 0};
 
-var centPage = {x: canvas.width / 2, y: canvas.height / 2};
+/**
+ * Zoom the canvas in or out
+ * 
+ * @param {number} zoom The new scale of the canvas (normal zoom = 1)
+ */
+function zoom(zoom) {
+    // For some reason, we have to return to no translation or else zooming
+    // will mess up dragging. A fix for another day?
+    ctx.translate(-translation.x, -translation.y);
+    translation = {x: 0, y: 0};
+
+    // Scale back to normal by scaling the recriprocal of current
+    ctx.scale(1/scale, 1/scale);
+
+    scale = zoom;
+    ctx.scale(scale, scale);
+}
+
+/**
+ * 
+ * @param {number} x The amount to move in the x direction
+ * @param {number} y The amount of move in the y direction
+ */
+function move(x, y) {
+    if(Math.abs(translation.x + x) < 1000) { translation.x += x; ctx.translate(x, 0); }
+    if(Math.abs(translation.y + y) < 1000) { translation.y += y; ctx.translate(0, y); }
+}
+
+function drawGridLine() {
+    var start = -1000;
+    setDrawColor("rgba(0,0,0,0.2)");
+    for(var x = start; x < canvas.width; x += 40) {
+        drawSolidLine({x: x, y: start}, {x: x, y: canvas.height}, 1);
+    }
+    for(var y = start; y < canvas.height; y += 40) {
+        drawSolidLine({x: start, y: y}, {x: canvas.width, y: y}, 1);
+    }
+    resetDrawColor();
+}
 
 /**
  * Draw text

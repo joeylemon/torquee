@@ -5,12 +5,12 @@ shapes.push({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)});
 
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
-    mouse = {x: e.pageX, y: e.pageY};
+    mouse = getDrawPosition({x: e.pageX, y: e.pageY});
 });
 
 // Listen for the beginning of a mouse drag
 $("#canvas").mousedown(function(e) {
-    anchor = {x: e.pageX, y: e.pageY};
+    anchor = getDrawPosition({x: e.pageX, y: e.pageY});
     if(drags.length != 0) {
         drags[drags.length - 1].setDrawComponents(false);
     }
@@ -30,7 +30,9 @@ $("#canvas").mouseup(function(e) {
  * The draw function; called many times a second
  */
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(-translation.x, -translation.y, canvas.width, canvas.height);
+
+    drawGridLine();
 
     // Draw all drags
     for(var i = 0; i < drags.length; i++) {

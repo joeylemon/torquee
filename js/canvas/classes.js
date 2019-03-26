@@ -55,8 +55,13 @@ class Drag {
      */
     draw() {
         if(this.draw_components){
+            // Set color to transparent gray
             setDrawColor("rgba(88,89,91,0.4)");
+
+            // Draw x-component line
             drawDashedLineWithArrow(this.from, {x: this.to.x, y: this.from.y}, 5);
+
+            // Draw y-component line
             drawDashedLineWithArrow(this.from, {x: this.from.x, y: this.to.y}, 5);
 
             if(this.deg_angle > 3) {
@@ -77,22 +82,40 @@ class Drag {
             if(Math.abs(this.components.x) > 10) this.component_text.x.draw();
             if(Math.abs(this.components.y) > 10) this.component_text.y.draw();
 
-            // Draw distance lines from last added shape
-            setDrawColor("rgba(220,130,0,0.4)");
+            // Draw distance lines extending from last added shape
             if(this.force > 0) {
+                // Set color to transparent orange
+                setDrawColor("rgba(220,130,0,0.4)");
+
+                // Get the last added shape
                 var loc = shapes[shapes.length - 1];
+
+                // Calculate the x and y distances
                 var x_dist = Math.abs(pixelsToMeters(this.from.x - loc.x));
                 var y_dist = Math.abs(pixelsToMeters(this.from.y - loc.y));
                 
+                // Draw x distance line
+                drawSolidLine(loc, {x: this.from.x, y: loc.y});
                 if(x_dist > 0.5) {
-                    drawSolidLine(loc, {x: this.from.x, y: loc.y});
+                    // Draw dist times force text above line
                     drawText(x_dist.toFixed(1) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
+
+                    // Draw torque text below line
+                    drawText(this.getTorque(loc).y.toFixed(0) + " Nm", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y + 15});
                 }
 
+                // Draw y distance line
+                drawSolidLine(loc, {x: loc.x, y: this.from.y});
                 if(y_dist > 0.5) {
-                    drawSolidLine(loc, {x: loc.x, y: this.from.y});
+                    // Rotate the canvas 90 degrees
                     rotateCanvas(-Math.PI/2, {x: loc.x - 7, y: loc.y + ((this.from.y - loc.y)/2)});
+
+                    // Draw dist times force text above line
                     drawText(y_dist.toFixed(1) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", y_dist < 2 ? 9 : 15, {x:0,y:0});
+
+                    // Draw torque text below line
+                    drawText(this.getTorque(loc).x.toFixed(0) + " Nm", y_dist < 2 ? 9 : 15, {x: 0, y: 23});
+
                     unrotateCanvas();
                 }
             }
@@ -100,12 +123,16 @@ class Drag {
             resetDrawColor();
         }
 
+        // If force is small, draw line without an arrowhead
         if(this.force < 1){
             drawSolidLine(this.from, this.to, 7);
             return;
         }
         
+        // Draw the force arrow
         drawLineWithArrow(this.from, this.to, 7);
+
+        // Draw the force text
         drawText(this.force.toFixed(0) + " N", 23, this.text_pos);
     }
 };

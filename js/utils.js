@@ -13,6 +13,15 @@ function distance(p1, p2) {
 }
 
 /**
+ * Get the position for drawing a given set of coordinates
+ * 
+ * @param {Object} loc The new position, accounting for scale and translation
+ */
+function getDrawPosition(loc) {
+    return {x: loc.x / scale - translation.x, y: loc.y / scale - translation.y};
+}
+
+/**
  * Get a force (N) based on a distance
  * 
  * @param {number} dist The distance
@@ -116,17 +125,20 @@ function getTorqueSign(comp, val, from, loc) {
  */
 function getNetTorque(loc) {
     var net = 0;
+
+    // Loop through all drags and add torque to net
     for(var i = 0; i < drags.length; i++) {
         var torque = drags[i].getTorque(loc);
         net += torque.x;
         net += torque.y;
     }
 
+    // Include current drag if it exists
     if(anchor) {
         var torque = getDrag().getTorque(loc);
         net += torque.x;
         net += torque.y;
     }
-    
+
     return net;
 }
