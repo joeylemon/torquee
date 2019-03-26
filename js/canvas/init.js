@@ -36,6 +36,7 @@ $(window).resize(function(e){
     canvas.height = h * PIXEL_RATIO;
 });
 */
+var next_id = 0;
 
 ctx.lineCap = "round";
 ctx.textAlign = "center"; 

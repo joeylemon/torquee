@@ -84,12 +84,13 @@ class Drag {
             if(Math.abs(this.components.y) > 3) this.component_text.y.draw();
 
             // Draw distance lines extending from last added shape
-            if(getLastAddedShape() && this.force > 0) {
+            var shape = highlighted ? highlighted : getLastAddedShape();
+            if(shape && this.force > 0) {
                 // Set color to transparent orange
                 setDrawColor("rgba(220,130,0,0.4)");
 
                 // Get the last added shape
-                var loc = getLastAddedShape().loc;
+                var loc = shape.loc;
 
                 // Calculate the x and y distances
                 var x_dist = Math.abs(pixelsToMeters(this.from.x - loc.x));
@@ -178,6 +179,15 @@ class ComponentText {
 
 // Load in all images in draw_shapes dictionary
 var images = ["square", "circle", "triangle", "schleter", "flower", "hexagon"];
+var mult = {
+    square: 1,
+    circle: 0.7,
+    triangle: 0.5,
+    schleter: 0.45,
+    flower: 0.9,
+    hexagon: 0.75
+}
+
 var draw_shapes = {};
 for(var i = 0; i < images.length; i++) {
     var img_name = images[i];
@@ -194,15 +204,16 @@ class Shape {
         this.loc = loc;
         this.img = draw_shapes[shape];
         this.size = size;
-        this.mom_inertia = this.size * 500;
+        this.mom_inertia = this.size * 50 * mult[shape];
         this.center = {x: this.loc.x - (this.size/2), y: this.loc.y - (this.size/2)};
         this.rotation = 0;
         this.last_rotation = 0;
+        this.id = ++next_id;
     }
 
     getTorque() { return getNetTorque(this.loc); }
 
-    getAngularVelocity() { return -this.getTorque() / this.mom_inertia }
+    getAngularAcceleration() { return -this.getTorque() / this.mom_inertia }
 
     /**
      * Take into account the time since last rotation
@@ -210,7 +221,7 @@ class Shape {
      */
     getAmountToRotate() {
         var time = Date.now() - this.last_rotation;
-        return this.getAngularVelocity() * time;
+        return this.getAngularAcceleration()/10 * time;
     }
 
     /**
@@ -225,10 +236,15 @@ class Shape {
 
     draw() {
         this.rotate(this.getAmountToRotate());
+        
         rotateCanvas(this.rotation, this.loc);
         ctx.drawImage(this.img, -this.size/2, -this.size/2, this.size, this.size);
         unrotateCanvas();
+
         drawText(this.getTorque().toFixed(0) + " Nm", 12, {x: this.loc.x, y: this.center.y + this.size + 13}, "profont");
+        if(highlighted && highlighted.id == this.id) {
+            drawText(-this.getAngularAcceleration().toFixed(4) + " rad/s²", 12, {x: this.loc.x, y: this.center.y - 6}, "profont");
+            drawText(this.mom_inertia + " kg-m²", 12, {x: this.loc.x, y: this.center.y - 18}, "profont");        }
     }
 };
 

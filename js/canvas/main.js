@@ -3,6 +3,8 @@ var drags = new Array();
 var shapes = new Array();
 shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}, "square", 50));
 
+var highlighted;
+
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
     mouse = getDrawPosition({x: e.pageX, y: e.pageY});
@@ -12,13 +14,27 @@ $("#canvas").mousemove(function(e) {
 $("#canvas").mousedown(function(e) {
     var loc = {x: e.pageX, y: e.pageY};
     anchor = getDrawPosition(loc);
-    if(drags.length != 0) {
+    if(drags.length != 0 && !highlighting) {
         drags[drags.length - 1].setDrawComponents(false);
     }
 });
 
 // Listen for the ending of a mouse drag
 $("#canvas").mouseup(function(e) {
+    if(highlighting) {
+        var shape = getShapeAtLocation(mouse);
+        if(shape) {
+            if(highlighted && highlighted.id == shape.id) {
+                highlighted = undefined;
+            } else {
+                highlighted = shape;
+            }
+
+            highlighting = false;
+            toggleHighlighting(false);
+        }
+    }
+
     if(!anchor){ return; }
 
     if(!erasing) {

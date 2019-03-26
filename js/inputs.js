@@ -44,6 +44,7 @@ document.getElementById("zoom").oninput = function(e) {
 $("#tool-clear").click(function(e) {
     drags = new Array();
     shapes = new Array();
+    highlighted = undefined;
 });
 
 /**
@@ -61,6 +62,22 @@ function toggleErasing(on) {
         document.getElementById("canvas").style.cursor = "url(images/eraser_cursor.png), auto";
     }else{
         $("#tool-eraser").removeClass("active");
+        document.getElementById("canvas").style.cursor = "auto";
+    }
+}
+
+var highlighting = false;
+$("#tool-highlight").click(function(e) {
+    highlighting = !highlighting;
+    toggleHighlighting(highlighting);
+});
+
+function toggleHighlighting(on) {
+    if(on) {
+        $("#tool-highlight").addClass("active");
+        document.getElementById("canvas").style.cursor = "url(images/highlight_cursor.png) 16 16, auto";
+    }else{
+        $("#tool-highlight").removeClass("active");
         document.getElementById("canvas").style.cursor = "auto";
     }
 }
@@ -98,7 +115,7 @@ function getShapeSize() {
         case "tool-medium":
             return 40; break;
         case "tool-large":
-            return 55; break;
+            return 65; break;
         default:
             return 20;
     }

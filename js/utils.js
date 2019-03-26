@@ -149,3 +149,17 @@ function getNetTorque(loc) {
 function getLastAddedShape() {
     return shapes[shapes.length - 1];
 }
+
+/**
+ * Get a shape at a location
+ * 
+ * @param {Object} loc The location to find shape at
+ */
+function getShapeAtLocation(loc) {
+    for(var i = 0; i < shapes.length; i++) {
+        var shape = shapes[i];
+        if(distance(shape.center, loc) < shape.size) {
+            return shape;
+        }
+    }
+}
