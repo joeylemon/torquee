@@ -79,14 +79,21 @@ function move(x, y) {
     if(Math.abs(translation.y + y) < 1000) { translation.y += y; ctx.translate(0, y); }
 }
 
+/**
+ * Draw the background grid line
+ */
 function drawGridLine() {
     var start = -1000;
     setDrawColor("rgba(0,0,0,0.2)");
-    for(var x = start; x < canvas.width; x += 40) {
-        drawSolidLine({x: x, y: start}, {x: x, y: canvas.height}, 1);
+
+    // Vertical lines
+    for(var x = start; x < canvas.width + -start; x += 40) {
+        drawSolidLine({x: x, y: start}, {x: x, y: canvas.height + -start}, 1);
     }
-    for(var y = start; y < canvas.height; y += 40) {
-        drawSolidLine({x: start, y: y}, {x: canvas.width, y: y}, 1);
+
+    // Horizontal lines
+    for(var y = start; y < canvas.height + -start; y += 40) {
+        drawSolidLine({x: start, y: y}, {x: canvas.width + -start, y: y}, 1);
     }
     resetDrawColor();
 }

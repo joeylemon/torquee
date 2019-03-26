@@ -12,16 +12,23 @@ $("#canvas").on("mousewheel", function(e) {
         e.stopImmediatePropagation();
 
         var change = 0.006 * -e.originalEvent.deltaY;
-        if(cur_zoom + change <= 1 && cur_zoom + change >= -0.2) {
+        if(cur_zoom + change <= 2 && cur_zoom + change >= -0.4) {
             cur_zoom += change;
             zoom(1 + cur_zoom);
+            document.getElementById("zoom").value = cur_zoom;
         }
     }else {
         e.preventDefault();
         e.stopImmediatePropagation();
-        move(-e.originalEvent.deltaX, -e.originalEvent.deltaY);
+        move(-e.originalEvent.deltaX * (1/(1+cur_zoom)), -e.originalEvent.deltaY * (1/(1+cur_zoom)));
     }
 });
+
+document.getElementById("zoom").value = cur_zoom;
+document.getElementById("zoom").oninput = function(e) {
+    cur_zoom = parseFloat(document.getElementById("zoom").value);
+    zoom(1 + cur_zoom);
+}
 
 // Keep track of if the command button is down
 // May be useful in the future for more controls
