@@ -175,14 +175,18 @@ class ComponentText {
     }
 };
 
+const square = new Image();
+square.src = 'images/square.png';
+
 class Shape {
-    constructor(loc) {
+    constructor(loc, img) {
         this.loc = loc;
+        this.img = img;
+        this.size = 40;
     }
 
     draw() {
-        ctx.rect(this.loc.x - 3, this.loc.y - 3, 6, 6);
-        ctx.fill();
+        ctx.drawImage(square, this.loc.x - (this.size/2), this.loc.y - (this.size/2), 40, 40);
         drawText(getNetTorque(this.loc).toFixed(0) + " Nm", 15, {x:this.loc.x + 2, y:this.loc.y + 25}, "lemon");
     }
 };

@@ -35,27 +35,31 @@ function draw() {
     drawGridLine();
 
     // Draw all drags
-    for(var i = 0; i < drags.length; i++) {
-        var drag = drags[i];
-        drag.draw();
-    }
+    drawAllElements(drags);
 
     // Draw the current drag if user is still dragging
     if(anchor){
         getDrag().draw();
     }
 
-    // Draw a dot for a point of reference
-    // Temporary: for debugging
-    for(var i = 0; i < shapes.length; i++) {
-        var shape = shapes[i];
-        shape.draw();
-    }
+    drawAllElements(shapes);
 
     // Request the next frame to be drawn
     window.requestAnimationFrame(draw);
 }
 draw();
+
+/**
+ * Draw all elements in an array
+ * 
+ * @param {Array} arr An array of classes with a draw() function
+ */
+function drawAllElements(arr) {
+    for(var i = 0; i < arr.length; i++) {
+        var obj = arr[i];
+        obj.draw();
+    }
+}
 
 /**
  * Get a drag object for the current drag
