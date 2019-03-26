@@ -177,7 +177,7 @@ class ComponentText {
 };
 
 // Load in all images in draw_shapes dictionary
-var images = ["square", "circle", "triangle", "schleter"];
+var images = ["square", "circle", "triangle", "schleter", "flower", "hexagon"];
 var draw_shapes = {};
 for(var i = 0; i < images.length; i++) {
     var img_name = images[i];
@@ -232,6 +232,9 @@ class Shape {
     }
 };
 
+/**
+ * Holds information about a rectangle given two of its points
+ */
 class Rect {
     constructor(from, to) {
         this.x = from.x < to.x ? from.x : to.x;

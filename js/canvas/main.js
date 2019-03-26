@@ -27,6 +27,7 @@ $("#canvas").mouseup(function(e) {
             drags.push(drag);
         }
     }else{
+        // Erase all objects inside of the rectangle
         var rect = new Rect(anchor, mouse);
         for(var i = shapes.length - 1; i >= 0; --i) {
             if(rect.contains(shapes[i].center)) {
@@ -51,7 +52,6 @@ function draw() {
 
     drawGridLine();
 
-    // Draw all drags
     drawAllElements(drags);
 
     // Draw the current drag if user is still dragging

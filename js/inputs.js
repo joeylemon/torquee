@@ -52,14 +52,18 @@ $("#tool-clear").click(function(e) {
 var erasing = false;
 $("#tool-eraser").click(function(e) {
     erasing = !erasing;
-    if(erasing) {
+    toggleErasing(erasing);
+});
+
+function toggleErasing(on) {
+    if(on) {
         $("#tool-eraser").addClass("active");
         document.getElementById("canvas").style.cursor = "url(images/eraser_cursor.png), auto";
     }else{
         $("#tool-eraser").removeClass("active");
         document.getElementById("canvas").style.cursor = "auto";
     }
-});
+}
 
 /**
  * Shape selection: change the current shape
@@ -102,12 +106,13 @@ function getShapeSize() {
 
 // Keep track of if the command button is down
 // May be useful in the future for more controls
-var cmd_down = false;
 window.onkeydown = function(e) {
     var code = e.keyCode;
     //console.log(code);
-    if(code == 91) {
-        cmd_down = true;
+
+    if(code == 16) {
+        erasing = true;
+        toggleErasing(true);
     }
 
     var dist = 70;
@@ -118,7 +123,9 @@ window.onkeydown = function(e) {
 };
 window.onkeyup = function(e) {
     var code = e.keyCode;
-    if(code == 91) {
-        cmd_down = false;
+
+    if(code == 16) {
+        erasing = false;
+        toggleErasing(false);
     }
 };
