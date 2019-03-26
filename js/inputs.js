@@ -1,6 +1,6 @@
 // Listen for a right click
 $("#canvas").contextmenu(function(e) {
-    shapes.push(getDrawPosition({x: e.pageX, y: e.pageY}));
+    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY})));
     e.preventDefault();
     return false;
 });
@@ -29,6 +29,10 @@ document.getElementById("zoom").oninput = function(e) {
     cur_zoom = parseFloat(document.getElementById("zoom").value);
     zoom(1 + cur_zoom);
 }
+
+$("#tool-clear").click(function(e) {
+    drags = new Array();
+});
 
 // Keep track of if the command button is down
 // May be useful in the future for more controls

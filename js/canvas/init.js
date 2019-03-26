@@ -12,28 +12,34 @@ var PIXEL_RATIO = (function () {
 })();
 
 // Create a canvas with optimal pixel ratios
-createHiDPICanvas = function (w, h, ratio) {
-    if (!ratio) {
-        ratio = PIXEL_RATIO;
-    }
-    var can = document.getElementById("canvas");
-    can.width = w * ratio;
-    can.height = h * ratio;
-    can.style.width = w + "px";
-    can.style.height = h + "px";
-    can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-    return can;
+function initCanvas(width, height) {
+    canvas.width = width * PIXEL_RATIO;
+    canvas.height = height * PIXEL_RATIO;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.getContext("2d").setTransform(PIXEL_RATIO, 0, 0, PIXEL_RATIO, 0, 0);
 }
 
 // Initialize the canvas and context
 var width = $("#canvas").width();
 var height = $("#canvas").height();
-var canvas = createHiDPICanvas(width, height);
+var canvas = document.getElementById("canvas");
+initCanvas(width, height);
 var ctx = canvas.getContext("2d");
-var default_color = "#000";
 ctx.translate(0.5, 0.5);
+
+/*
+$(window).resize(function(e){
+    var w = $(window).width();
+    var h = $(window).height();
+    canvas.width = w * PIXEL_RATIO;
+    canvas.height = h * PIXEL_RATIO;
+});
+*/
+
 ctx.lineCap = "round";
 ctx.textAlign = "center"; 
+var default_color = "#000";
 ctx.fillStyle = default_color;
 ctx.strokeStyle = default_color;
 
@@ -241,6 +247,13 @@ function getAngleTextLocation(quadrant, angle, origin) {
             break;
     }
     return angle_loc;
+}
+
+/**
+ * Get the last shape that was added
+ */
+function getLastAddedShape() {
+    return shapes[shapes.length - 1];
 }
 
 /**

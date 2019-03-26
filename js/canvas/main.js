@@ -1,7 +1,7 @@
 // An array for FloatingText objects
 var drags = new Array();
 var shapes = new Array();
-shapes.push({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)});
+shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}));
 
 // Listen for a mouse move
 $("#canvas").mousemove(function(e) {
@@ -49,9 +49,7 @@ function draw() {
     // Temporary: for debugging
     for(var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
-        ctx.rect(shape.x - 3, shape.y - 3, 6, 6);
-        ctx.fill();
-        drawText(getNetTorque(shape).toFixed(0) + " Nm", 15, {x:shape.x + 2, y:shape.y + 25}, "lemon");
+        shape.draw();
     }
 
     // Request the next frame to be drawn

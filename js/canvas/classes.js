@@ -88,7 +88,7 @@ class Drag {
                 setDrawColor("rgba(220,130,0,0.4)");
 
                 // Get the last added shape
-                var loc = shapes[shapes.length - 1];
+                var loc = getLastAddedShape().loc;
 
                 // Calculate the x and y distances
                 var x_dist = Math.abs(pixelsToMeters(this.from.x - loc.x));
@@ -172,5 +172,17 @@ class ComponentText {
             drawText(this.force.toFixed(0) + "sin(" + this.deg_angle.toFixed(0) + ") = " + Math.abs(this.components.y).toFixed(0) + " N", 10, {x:0,y:0});
             unrotateCanvas();
         }
+    }
+};
+
+class Shape {
+    constructor(loc) {
+        this.loc = loc;
+    }
+
+    draw() {
+        ctx.rect(this.loc.x - 3, this.loc.y - 3, 6, 6);
+        ctx.fill();
+        drawText(getNetTorque(this.loc).toFixed(0) + " Nm", 15, {x:this.loc.x + 2, y:this.loc.y + 25}, "lemon");
     }
 };
