@@ -187,22 +187,19 @@ class ComponentText {
 };
 
 // Load in all images in draw_shapes dictionary
-var images = ["square", "circle", "triangle", "schleter", "flower", "hexagon"];
-var mult = {
-    square: 1,
-    circle: 0.7,
-    triangle: 0.5,
-    schleter: 0.45,
-    flower: 0.9,
-    hexagon: 0.75
+var imgs = {
+    square: {mult: 1},
+    circle: {mult: 0.7},
+    triangle: {mult: 0.5},
+    schleter: {mult: 0.45},
+    flower: {mult: 0.9},
+    hexagon: {mult: 0.75},
 }
 
-var draw_shapes = {};
-for(var i = 0; i < images.length; i++) {
-    var img_name = images[i];
+for(var key in imgs) {
     var img = new Image();
-    img.src = 'images/' + img_name + '.png';
-    draw_shapes[img_name] = img;
+    img.src = 'images/' + key + '.png';
+    imgs[key]["img"] = img;
 }
 
 /**
@@ -211,9 +208,9 @@ for(var i = 0; i < images.length; i++) {
 class Shape {
     constructor(loc, shape, size=20) {
         this.loc = loc;
-        this.img = draw_shapes[shape];
+        this.img = imgs[shape].img;
         this.size = size;
-        this.mom_inertia = this.size * 50 * mult[shape];
+        this.mom_inertia = this.size * 50 * imgs[shape].mult;
         this.center = {x: this.loc.x - (this.size/2), y: this.loc.y - (this.size/2)};
         this.rotation = 0;
         this.last_rotation = 0;
