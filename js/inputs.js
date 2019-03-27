@@ -87,6 +87,21 @@ function toggleHighlighting(on) {
     }
 }
 
+$("#tool-move").click(function(e) {
+    moving = !moving;
+    toggleMoving(moving);
+});
+
+function toggleMoving(on) {
+    if(on) {
+        $("#tool-move").addClass("active");
+        document.getElementById("canvas").style.cursor = "grab";
+    }else{
+        $("#tool-move").removeClass("active");
+        document.getElementById("canvas").style.cursor = "auto";
+    }
+}
+
 /**
  * Shape selection: change the current shape
  */

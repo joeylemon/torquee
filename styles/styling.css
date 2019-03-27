@@ -205,9 +205,9 @@ body {
 }
 
 .toolbox button img {
-    width: 14px;
+    width: 11px;
     position: relative;
-    top: 2px;
+    top: 1px;
     margin-right: 5px;
 }
 
@@ -255,7 +255,8 @@ body {
 }
 
 .toolbox .highlight button {
-    width: 180px;
+    width: 90px;
+    font-size: 10px;
 }
 
 .toolbox .highlight .active {

@@ -52,6 +52,9 @@ ctx.scale(scale, scale);
 
 var translation = {x: 0, y: 0};
 
+var moving = false;
+var grab_loc;
+
 // The anchor for a mouse drag
 var anchor;
 
