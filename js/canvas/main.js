@@ -13,7 +13,9 @@ $("#canvas").mousemove(function(e) {
 // Listen for the beginning of a mouse drag
 $("#canvas").mousedown(function(e) {
     var loc = {x: e.pageX, y: e.pageY};
-    anchor = getDrawPosition(loc);
+
+    if(!highlighting) anchor = getDrawPosition(loc);
+
     if(drags.length != 0 && !highlighting) {
         drags[drags.length - 1].setDrawComponents(false);
     }
@@ -26,7 +28,7 @@ $("#canvas").mouseup(function(e) {
         if(shape) {
             if(highlighted && highlighted.id == shape.id) {
                 highlighted = undefined;
-            } else {
+            }else{
                 highlighted = shape;
             }
 
@@ -39,7 +41,7 @@ $("#canvas").mouseup(function(e) {
 
     if(!erasing) {
         var drag = getDrag();
-        if(drag.force > 0.5) {
+        if(drag.distance > 10) {
             drags.push(drag);
         }
     }else{

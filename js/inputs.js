@@ -38,6 +38,11 @@ document.getElementById("zoom").oninput = function(e) {
     zoom(1 + cur_zoom);
 }
 
+document.getElementById("dampener").value = cur_dampening;
+document.getElementById("dampener").oninput = function(e) {
+    cur_dampening = parseFloat(document.getElementById("dampener").value);
+}
+
 /**
  * Clear button: clear all objects from canvas
  */

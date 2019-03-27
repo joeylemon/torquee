@@ -1,6 +1,15 @@
 const Component = {
     X: 1, Y: 2
 };
+var cur_dampening = 16;
+var accurate_dampening = 70;
+
+/**
+ * Get the amount of decimal places to display currently
+ */
+function getDecimalPlaces() {
+    return cur_dampening > accurate_dampening ? 2 : 1;
+}
 
 /**
  * Get the distance between two positions
@@ -27,7 +36,7 @@ function getDrawPosition(loc) {
  * @param {number} dist The distance
  */
 function getDragForce(dist) {
-    return dist / 16;
+    return dist / cur_dampening;
 }
 
 /**

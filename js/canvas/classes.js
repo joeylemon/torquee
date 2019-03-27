@@ -8,10 +8,15 @@ class Drag {
         this.midpoint = {x: (from.x + to.x)/2, y: (from.y + to.y)/2};
         this.distance = distance(from, to);
         this.force = getDragForce(this.distance);
+        this.force_text = this.force.toFixed(getDecimalPlaces());
         this.angle = Math.atan2(to.y - from.y, to.x - from.x);
 
         // Convert angle to radians, and keep it between 0-90
-        this.deg_angle = radToDeg(Math.atan2(Math.abs(to.y - from.y), Math.abs(to.x - from.x)));
+        this.distances = {
+            x: Math.abs(to.x - from.x),
+            y: Math.abs(to.y - from.y)
+        }
+        this.deg_angle = radToDeg(Math.atan2(this.distances.y, this.distances.x));
 
         this.quadrant = getQuadrant(this.angle);
 
@@ -80,8 +85,8 @@ class Drag {
             }
 
             // Draw component texts
-            if(Math.abs(this.components.x) > 3) this.component_text.x.draw();
-            if(Math.abs(this.components.y) > 3) this.component_text.y.draw();
+            if(Math.abs(this.distances.x) > 60) this.component_text.x.draw();
+            if(Math.abs(this.distances.y) > 60) this.component_text.y.draw();
 
             // Draw distance lines extending from last added shape
             var shape = highlighted ? highlighted : getLastAddedShape();
@@ -100,10 +105,10 @@ class Drag {
                 drawSolidLine(loc, {x: this.from.x, y: loc.y});
                 if(x_dist > 0.5) {
                     // Draw dist times force text above line
-                    drawText(x_dist.toFixed(1) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
+                    drawText(x_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).y.toFixed(0) + " Nm", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y + 15});
+                    drawText(this.getTorque(loc).y.toFixed(getDecimalPlaces()) + " Nm", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y + 15});
                 }
 
                 // Draw y distance line
@@ -113,10 +118,10 @@ class Drag {
                     rotateCanvas(-Math.PI/2, {x: loc.x - 7, y: loc.y + ((this.from.y - loc.y)/2)});
 
                     // Draw dist times force text above line
-                    drawText(y_dist.toFixed(1) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", y_dist < 2 ? 9 : 15, {x:0,y:0});
+                    drawText(y_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", y_dist < 2 ? 9 : 15, {x:0,y:0});
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).x.toFixed(0) + " Nm", y_dist < 2 ? 9 : 15, {x: 0, y: 23});
+                    drawText(this.getTorque(loc).x.toFixed(getDecimalPlaces()) + " Nm", y_dist < 2 ? 9 : 15, {x: 0, y: 23});
 
                     unrotateCanvas();
                 }
@@ -126,7 +131,7 @@ class Drag {
         }
 
         // If force is small, draw line without an arrowhead
-        if(this.force < 0.5){
+        if(this.distance < 10){
             drawSolidLine(this.from, this.to, 7);
             return;
         }
@@ -135,7 +140,7 @@ class Drag {
         drawLineWithArrow(this.from, this.to, 7);
 
         // Draw the force text
-        drawText(this.force.toFixed(0) + " N", 23, this.text_pos);
+        drawText(this.force_text + " N", 20, this.text_pos);
     }
 };
 
@@ -150,6 +155,10 @@ class ComponentText {
         this.force = force;
         this.quadrant = quadrant;
         this.components = components;
+        this.components_text = {
+            x: Math.abs(this.components.x).toFixed(getDecimalPlaces()),
+            y: Math.abs(this.components.y).toFixed(getDecimalPlaces())
+        }
         this.angle = Math.atan2(Math.abs(to.y - from.y), Math.abs(to.x - from.x));
         this.deg_angle = radToDeg(this.angle);
 
@@ -168,10 +177,10 @@ class ComponentText {
 
     draw() {
         if(this.component == Component.X) {
-            drawText(this.force.toFixed(0) + "cos(" + this.deg_angle.toFixed(0) + ") = " + Math.abs(this.components.x).toFixed(0) + " N", 10, this.loc);
+            drawText(this.force.toFixed(0) + "cos(" + this.deg_angle.toFixed(0) + ") = " + this.components_text.x + " N", 10, this.loc);
         }else if(this.component == Component.Y) {
             rotateCanvas(-Math.PI/2, this.loc);
-            drawText(this.force.toFixed(0) + "sin(" + this.deg_angle.toFixed(0) + ") = " + Math.abs(this.components.y).toFixed(0) + " N", 10, {x:0,y:0});
+            drawText(this.force.toFixed(0) + "sin(" + this.deg_angle.toFixed(0) + ") = " + this.components_text.y + " N", 10, {x:0,y:0});
             unrotateCanvas();
         }
     }
@@ -241,7 +250,7 @@ class Shape {
         ctx.drawImage(this.img, -this.size/2, -this.size/2, this.size, this.size);
         unrotateCanvas();
 
-        drawText(this.getTorque().toFixed(0) + " Nm", 12, {x: this.loc.x, y: this.center.y + this.size + 13}, "profont");
+        drawText(this.getTorque().toFixed(getDecimalPlaces()) + " Nm", 12, {x: this.loc.x, y: this.center.y + this.size + 13}, "profont");
         if(highlighted && highlighted.id == this.id) {
             drawText(-this.getAngularAcceleration().toFixed(4) + " rad/s²", 12, {x: this.loc.x, y: this.center.y - 6}, "profont");
             drawText(this.mom_inertia + " kg-m²", 12, {x: this.loc.x, y: this.center.y - 18}, "profont");        }
