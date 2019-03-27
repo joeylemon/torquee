@@ -53,7 +53,7 @@ body {
     height: 41px;
     padding-top: 3px;
     background-color: #fff;
-    box-shadow: 0px 1px 5px rgba(0,0,0,0.3);
+    border-bottom: 2px solid #cecece;
     padding-left: 140px;
     z-index: 1;
     user-select: none;
@@ -122,7 +122,7 @@ body {
     font-weight: bold;
 }
 
-.overlay .info-box .info img {
+.overlay .info-box .info .float-img {
     float: left;
     margin-right: 15px;
     user-select: none;
