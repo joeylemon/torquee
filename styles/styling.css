@@ -107,7 +107,6 @@ body {
 .overlay .info-box .title {
     font-family: roboto;
     font-size: 35px;
-    border-bottom: 1px solid #000;
 }
 
 .overlay .info-box .info {
