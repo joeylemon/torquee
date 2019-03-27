@@ -126,8 +126,6 @@ function getShapeSize() {
     }
 }
 
-// Keep track of if the command button is down
-// May be useful in the future for more controls
 window.onkeydown = function(e) {
     var code = e.keyCode;
     //console.log(code);

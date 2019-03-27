@@ -1,6 +1,8 @@
 // An array for FloatingText objects
 var drags = new Array();
 var shapes = new Array();
+
+// Add a default shape at the center
 shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}, "square", 50));
 
 var highlighted;
@@ -12,12 +14,14 @@ $("#canvas").mousemove(function(e) {
 
 // Listen for the beginning of a mouse drag
 $("#canvas").mousedown(function(e) {
-    var loc = {x: e.pageX, y: e.pageY};
+    if(e.button == 0) {
+        var loc = {x: e.pageX, y: e.pageY};
 
-    if(!highlighting) anchor = getDrawPosition(loc);
+        if(!highlighting) anchor = getDrawPosition(loc);
 
-    if(drags.length != 0 && !highlighting) {
-        drags[drags.length - 1].setDrawComponents(false);
+        if(drags.length != 0 && !highlighting && !erasing) {
+            drags[drags.length - 1].setDrawComponents(false);
+        }
     }
 });
 
@@ -49,6 +53,7 @@ $("#canvas").mouseup(function(e) {
         var rect = new Rect(anchor, mouse);
         for(var i = shapes.length - 1; i >= 0; --i) {
             if(rect.contains(shapes[i].center)) {
+                if(highlighted && highlighted.id == shapes[i].id) highlighted = undefined;
                 shapes.splice(i, 1);
             }
         }
