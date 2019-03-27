@@ -54,6 +54,7 @@ var translation = {x: 0, y: 0};
 
 var moving = false;
 var grab_loc;
+var highlighted;
 
 // The anchor for a mouse drag
 var anchor;

@@ -1,8 +1,88 @@
+// Listen for a mouse move
+$("#canvas").mousemove(function(e) {
+    mouse = getDrawPosition({x: e.pageX, y: e.pageY});
+});
+
+// Listen for the beginning of a mouse drag
+$("#canvas").mousedown(function(e) {
+    mouse = getDrawPosition({x: e.pageX, y: e.pageY});
+
+    if(e.button == 0) {
+        var loc = {x: e.pageX, y: e.pageY};
+
+        if(moving) {
+            grab_loc = getDrawPosition(loc);
+            document.getElementById("canvas").style.cursor = "grabbing";
+            return;
+        }
+
+        if(!highlighting) anchor = getDrawPosition(loc);
+
+        if(drags.length != 0 && !highlighting && !erasing) {
+            drags[drags.length - 1].setDrawComponents(false);
+        }
+    }else if(e.button == 2) {
+        shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), current_shape, getShapeSize()));
+    }
+});
+
+// Listen for the ending of a mouse drag
+$("#canvas").mouseup(function(e) {
+    mouse = getDrawPosition({x: e.pageX, y: e.pageY});
+
+    if(e.button == 0) {
+        if(highlighting) {
+            var shape = getShapeAtLocation(mouse);
+            if(shape) {
+                if(highlighted && highlighted.id == shape.id) {
+                    highlighted = undefined;
+                }else{
+                    highlighted = shape;
+                }
+
+                highlighting = false;
+                toggleHighlighting(false);
+            }
+        }
+
+        if(moving) {
+            grab_loc = undefined;
+            document.getElementById("canvas").style.cursor = "grab";
+            return;
+        }
+
+        if(!anchor){ return; }
+
+        if(!erasing) {
+            var drag = getDrag();
+            if(drag.distance > 10) {
+                drags.push(drag);
+            }
+        }else{
+            // Erase all objects inside of the rectangle
+            var rect = new Rect(anchor, mouse);
+            for(var i = shapes.length - 1; i >= 0; --i) {
+                if(rect.contains(shapes[i].center)) {
+                    if(highlighted && highlighted.id == shapes[i].id) highlighted = undefined;
+                    shapes.splice(i, 1);
+                }
+            }
+            for(var i = drags.length - 1; i >= 0; --i) {
+                var drag = drags[i];
+                if(rect.contains(drag.midpoint) || rect.contains(drag.from) || rect.contains(drag.to)) {
+                    drags.splice(i, 1);
+                }
+            }
+        }
+        anchor = undefined;
+    }
+});
+
 /**
  * Right click: add shape to canvas
  */
 $("#canvas").contextmenu(function(e) {
-    shapes.push(new Shape(getDrawPosition({x: e.pageX, y: e.pageY}), current_shape, getShapeSize()));
+    mouse = getDrawPosition({x: e.pageX, y: e.pageY});
     e.preventDefault();
     return false;
 });
@@ -22,10 +102,16 @@ $("#canvas").on("mousewheel", function(e) {
             zoom(1 + cur_zoom);
             document.getElementById("zoom").value = cur_zoom;
         }
-    }else {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        move(-e.originalEvent.deltaX * (1/(1+cur_zoom)), -e.originalEvent.deltaY * (1/(1+cur_zoom)));
+    }else{
+        if(e.originalEvent.deltaY % 1 == 0) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            move(-e.originalEvent.deltaX * (1/(1+cur_zoom)), -e.originalEvent.deltaY * (1/(1+cur_zoom)));
+        }else{
+            cur_zoom += 0.006 * -e.originalEvent.deltaY;
+            zoom(1 + cur_zoom);
+            document.getElementById("zoom").value = cur_zoom;
+        }
     }
 });
 
@@ -148,13 +234,10 @@ window.onkeydown = function(e) {
     if(code == 16) {
         erasing = true;
         toggleErasing(true);
+    }else if(code == 17) {
+        moving = true;
+        toggleMoving(true);
     }
-
-    var dist = 70;
-    if(code == 37) move(-dist, 0);
-    if(code == 38) move(0, -dist);
-    if(code == 39) move(dist, 0);
-    if(code == 40) move(0, dist);
 };
 window.onkeyup = function(e) {
     var code = e.keyCode;
@@ -162,5 +245,8 @@ window.onkeyup = function(e) {
     if(code == 16) {
         erasing = false;
         toggleErasing(false);
+    }else if(code == 17) {
+        moving = false;
+        toggleMoving(false);
     }
 };
