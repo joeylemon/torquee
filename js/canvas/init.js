@@ -259,10 +259,12 @@ function drawBoundingBox(from, to) {
     var rect = new Rect(from, to);
     ctx.rect(rect.x, rect.y, rect.width, rect.height);
     ctx.fill();
-    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x + rect.width, y: rect.y}, 3);
-    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x, y: rect.y + rect.height}, 3);
-    drawDashedLine({x: rect.x + rect.width, y: rect.y}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3);
-    drawDashedLine({x: rect.x, y: rect.y + rect.height}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3);
+    setDrawColor("#9b9b9b");
+    var dashing = [13, 9];
+    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x + rect.width, y: rect.y}, 3, dashing);
+    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x, y: rect.y + rect.height}, 3, dashing);
+    drawDashedLine({x: rect.x + rect.width, y: rect.y}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3, dashing);
+    drawDashedLine({x: rect.x, y: rect.y + rect.height}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3, dashing);
     resetDrawColor();
 }
 

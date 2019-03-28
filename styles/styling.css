@@ -114,6 +114,7 @@ body {
     font-size: 20px;
     margin-top: 12px;
     text-align: left;
+    line-height: 30px;
 }
 
 .overlay .info-box .bold {
@@ -125,6 +126,10 @@ body {
     float: left;
     margin-right: 15px;
     user-select: none;
+    position: relative;
+    top: 10px;
+    width: 65px;
+    filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.25));
 }
 
 .overlay .info-box .close {
@@ -141,9 +146,47 @@ body {
 }
 
 .overlay .info-box .person {
-    width: 65px;
+    display: inline-block;
+    width: 175px;
+    height: 250px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    margin-top: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    vertical-align: top;
+}
+
+.overlay .info-box .person img {
+    width: 100px;
     border-radius: 50%;
     margin-top: 10px;
+    border: 2px solid #c1c1c1;
+}
+
+.overlay .info-box .person .name {
+    font-family: roboto;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #565656;
+}
+
+.overlay .info-box .person ul {
+    list-style-position: inside;
+    font-family: caviar;
+    font-size: 15px;
+    padding-left: 6px;
+    text-align: left;
+}
+
+.overlay .info-box .person ul li {
+    margin-bottom: 5px;
+}
+
+.overlay .info-box .person ul .job {
+    position: relative;
+    left: -8px;
 }
 
 .toolbox {

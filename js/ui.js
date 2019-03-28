@@ -33,6 +33,7 @@ function openMenu(event) {
     for(var i = 0; i < infoboxes.length; i++) {
         $("#" + infoboxes[i].id).hide();
     }
+    $("#toolbox").hide();
 
     // Show the overlay
     $("#overlay").fadeIn(200);
@@ -44,4 +45,5 @@ function openMenu(event) {
  */
 function closeMenu(event) {
     $("#overlay").fadeOut(200);
+    $("#toolbox").fadeIn(200);
 }

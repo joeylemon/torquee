@@ -105,10 +105,10 @@ class Drag {
                 drawSolidLine(loc, {x: this.from.x, y: loc.y});
                 if(x_dist > 0.5) {
                     // Draw dist times force text above line
-                    drawText(x_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
+                    drawText(x_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", 10, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y - 8});
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).y.toFixed(getDecimalPlaces()) + " Nm", x_dist < 2 ? 9 : 15, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y + 15});
+                    drawText(this.getTorque(loc).y.toFixed(getDecimalPlaces()) + " Nm", 10, {x: loc.x + ((this.from.x - loc.x)/2), y: loc.y + 15});
                 }
 
                 // Draw y distance line
@@ -118,10 +118,10 @@ class Drag {
                     rotateCanvas(-Math.PI/2, {x: loc.x - 7, y: loc.y + ((this.from.y - loc.y)/2)});
 
                     // Draw dist times force text above line
-                    drawText(y_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", y_dist < 2 ? 9 : 15, {x:0,y:0});
+                    drawText(y_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", 10, {x:0,y:0});
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).x.toFixed(getDecimalPlaces()) + " Nm", y_dist < 2 ? 9 : 15, {x: 0, y: 23});
+                    drawText(this.getTorque(loc).x.toFixed(getDecimalPlaces()) + " Nm", 10, {x: 0, y: 23});
 
                     unrotateCanvas();
                 }
