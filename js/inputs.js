@@ -117,6 +117,9 @@ document.getElementById("zoom").oninput = function(e) {
     zoom(1 + cur_zoom);
 }
 
+/**
+ * Slider: force dampener
+ */
 document.getElementById("dampener").value = cur_dampening;
 document.getElementById("dampener").oninput = function(e) {
     cur_dampening = parseFloat(document.getElementById("dampener").value);
@@ -150,6 +153,9 @@ function toggleErasing(on) {
     }
 }
 
+/**
+ * Highlight button: toggle highlighter
+ */
 var highlighting = false;
 $("#tool-highlight").click(function(e) {
     highlighting = !highlighting;
@@ -166,6 +172,9 @@ function toggleHighlighting(on) {
     }
 }
 
+/**
+ * Move button: toggle canvas pan-grab
+ */
 $("#tool-move").click(function(e) {
     moving = !moving;
     toggleMoving(moving);

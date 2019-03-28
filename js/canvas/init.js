@@ -30,12 +30,22 @@ ctx.translate(0.5, 0.5);
 
 /*
 $(window).resize(function(e){
-    var w = $(window).width();
-    var h = $(window).height();
+    ctx.translate(-translation.x, -translation.y);
+    ctx.scale(1/scale, 1/scale);
+    scale = 1;
+    translation = {x: 0, y: 0};
+
+    var w = $("#canvas").width();
+    var h = $("#canvas").height();
     canvas.width = w * PIXEL_RATIO;
     canvas.height = h * PIXEL_RATIO;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(PIXEL_RATIO, 0, 0, PIXEL_RATIO, 0, 0);
+    center = {x: w/2, y:h/2};
 });
 */
+
 var next_id = 0;
 
 ctx.lineCap = "round";

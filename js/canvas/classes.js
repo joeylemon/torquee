@@ -102,6 +102,7 @@ class Drag {
                 var y_dist = Math.abs(pixelsToMeters(this.from.y - loc.y));
                 
                 // Draw x distance line
+                ctx.lineCap = "square";
                 drawSolidLine(loc, {x: this.from.x, y: loc.y});
                 if(x_dist > 0.5) {
                     // Draw dist times force text above line
@@ -125,6 +126,7 @@ class Drag {
 
                     unrotateCanvas();
                 }
+                ctx.lineCap = "round";
             }
 
             resetDrawColor();
