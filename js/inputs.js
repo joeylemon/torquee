@@ -96,21 +96,14 @@ $("#canvas").on("mousewheel", function(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        var change = 0.006 * -e.originalEvent.deltaY;
-        if(cur_zoom + change <= 2 && cur_zoom + change >= -0.4) {
-            cur_zoom += change;
-            zoom(1 + cur_zoom);
-            document.getElementById("zoom").value = cur_zoom;
-        }
+        zoomChange(0.006 * -e.originalEvent.deltaY);
     }else{
         if(e.originalEvent.deltaY % 1 == 0) {
             e.preventDefault();
             e.stopImmediatePropagation();
             move(-e.originalEvent.deltaX * (1/(1+cur_zoom)), -e.originalEvent.deltaY * (1/(1+cur_zoom)));
         }else{
-            cur_zoom += 0.006 * -e.originalEvent.deltaY;
-            zoom(1 + cur_zoom);
-            document.getElementById("zoom").value = cur_zoom;
+            zoomChange(0.1 * (e.originalEvent.deltaY / Math.abs(e.originalEvent.deltaY)));
         }
     }
 });

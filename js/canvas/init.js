@@ -82,6 +82,24 @@ function zoom(zoom) {
 }
 
 /**
+ * Zoom in the given amount if it is within the zoom bounds
+ * 
+ * @param {number} change Amount to change zoom by
+ */
+function zoomChange(change) {
+    var added = cur_zoom + change;
+    if(added < -0.4) {
+        added = -0.4;
+    }else if(added > 2) {
+        added = 2;
+    }
+
+    cur_zoom = added;
+    zoom(1 + cur_zoom);
+    document.getElementById("zoom").value = cur_zoom;
+}
+
+/**
  * 
  * @param {number} x The amount to move in the x direction
  * @param {number} y The amount of move in the y direction
