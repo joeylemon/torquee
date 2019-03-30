@@ -101,7 +101,8 @@ body {
     padding: 10px;
     background-color: #fff;
     text-align: center;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    box-shadow: 1px 1px 12px rgba(0,0,0,0.5);
+    border-radius: 8px;
 }
 
 .overlay .info-box .title {
