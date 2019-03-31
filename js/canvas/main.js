@@ -3,7 +3,10 @@ var drags = new Array();
 var shapes = new Array();
 
 // Add a default shape at the center
-shapes.push(new Shape({x:width/2 - (width/2 % 40),y:height/2 - (height/2 % 40)}, "square", 50));
+shapes.push(new Shape({
+    x: width / 2 - (width / 2 % 40),
+    y: height / 2 - (height / 2 % 40)
+}, "flower", 40));
 
 /**
  * The draw function; called many times a second
@@ -16,18 +19,18 @@ function draw() {
     drawAllElements(drags);
 
     // Draw the current drag if user is still dragging
-    if(anchor){
-        if(!erasing) {
+    if (anchor) {
+        if (!erasing) {
             getDrag().draw();
-        }else{
+        } else {
             drawBoundingBox(anchor, mouse);
         }
     }
 
     drawAllElements(shapes);
 
-    if(moving && grab_loc) {
-        var diff = {x: mouse.x - grab_loc.x, y: mouse.y - grab_loc.y};
+    if (moving && grab_loc) {
+        var diff = { x: mouse.x - grab_loc.x, y: mouse.y - grab_loc.y };
         move(diff.x, diff.y);
     }
 
@@ -42,7 +45,7 @@ draw();
  * @param {Array} arr An array of classes with a draw() function
  */
 function drawAllElements(arr) {
-    for(var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];
         obj.draw();
     }

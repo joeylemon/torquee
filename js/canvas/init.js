@@ -1,5 +1,5 @@
 // Get optimal pixel ratio for current device
-var PIXEL_RATIO = (function () {
+var PIXEL_RATIO = (function() {
     var ctx = document.createElement("canvas").getContext("2d"),
         dpr = window.devicePixelRatio || 1,
         bsr = ctx.webkitBackingStorePixelRatio ||
@@ -49,18 +49,18 @@ $(window).resize(function(e){
 var next_id = 0;
 
 ctx.lineCap = "round";
-ctx.textAlign = "center"; 
+ctx.textAlign = "center";
 var default_color = "#000";
 ctx.fillStyle = default_color;
 ctx.strokeStyle = default_color;
 
-var center = {x: width/2, y:height/2};
+var center = { x: width / 2, y: height / 2 };
 
 var scale = 1;
 var last_scale = 0;
 ctx.scale(scale, scale);
 
-var translation = {x: 0, y: 0};
+var translation = { x: 0, y: 0 };
 
 var moving = false;
 var grab_loc;
@@ -70,7 +70,7 @@ var highlighted;
 var anchor;
 
 // The current mouse position
-var mouse = {x: 0, y: 0};
+var mouse = { x: 0, y: 0 };
 
 /**
  * Zoom the canvas in or out
@@ -82,7 +82,7 @@ function zoom(zoom) {
     ctx.translate(-translation.x, -translation.y);
 
     // Scale back to normal by scaling the recriprocal of current
-    ctx.scale(1/scale, 1/scale);
+    ctx.scale(1 / scale, 1 / scale);
 
     scale = zoom;
     ctx.scale(scale, scale);
@@ -98,9 +98,9 @@ function zoom(zoom) {
  */
 function zoomChange(change) {
     var added = cur_zoom + change;
-    if(added < -0.4) {
+    if (added < -0.4) {
         added = -0.4;
-    }else if(added > 2) {
+    } else if (added > 2) {
         added = 2;
     }
 
@@ -115,8 +115,10 @@ function zoomChange(change) {
  * @param {number} y The amount of move in the y direction
  */
 function move(x, y) {
-    if(Math.abs(translation.x + x) < 1000) { translation.x += x; ctx.translate(x, 0); }
-    if(Math.abs(translation.y + y) < 1000) { translation.y += y; ctx.translate(0, y); }
+    if (Math.abs(translation.x + x) < 1000) { translation.x += x;
+        ctx.translate(x, 0); }
+    if (Math.abs(translation.y + y) < 1000) { translation.y += y;
+        ctx.translate(0, y); }
 }
 
 /**
@@ -127,13 +129,13 @@ function drawGridLine() {
     setDrawColor("rgba(0,0,0,0.2)");
 
     // Vertical lines
-    for(var x = start; x < canvas.width + -start; x += 40) {
-        drawSolidLine({x: x, y: start}, {x: x, y: canvas.height + -start}, 1);
+    for (var x = start; x < canvas.width + -start; x += 40) {
+        drawSolidLine({ x: x, y: start }, { x: x, y: canvas.height + -start }, 1);
     }
 
     // Horizontal lines
-    for(var y = start; y < canvas.height + -start; y += 40) {
-        drawSolidLine({x: start, y: y}, {x: canvas.width + -start, y: y}, 1);
+    for (var y = start; y < canvas.height + -start; y += 40) {
+        drawSolidLine({ x: start, y: y }, { x: canvas.width + -start, y: y }, 1);
     }
     resetDrawColor();
 }
@@ -145,7 +147,7 @@ function drawGridLine() {
  * @param {number} size The size of the text
  * @param {Object} pos The location to draw at
  */
-function drawText(str, size, pos, font="profont") {
+function drawText(str, size, pos, font = "profont") {
     ctx.font = size + "px " + font;
     ctx.fillText(str, pos.x, pos.y);
 }
@@ -199,7 +201,7 @@ function drawDashedLineWithArrow(from, to, width, dash = [10, 20]) {
     ctx.lineTo(to.x, to.y);
     ctx.lineWidth = width;
     ctx.stroke();
-    if(distance(from, to) > 10) {
+    if (distance(from, to) > 10) {
         drawArrowhead(ctx, from, to, 10);
     }
     ctx.setLineDash([]);
@@ -271,10 +273,10 @@ function drawBoundingBox(from, to) {
     ctx.fill();
     setDrawColor("#9b9b9b");
     var dashing = [13, 9];
-    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x + rect.width, y: rect.y}, 3, dashing);
-    drawDashedLine({x: rect.x, y: rect.y}, {x: rect.x, y: rect.y + rect.height}, 3, dashing);
-    drawDashedLine({x: rect.x + rect.width, y: rect.y}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3, dashing);
-    drawDashedLine({x: rect.x, y: rect.y + rect.height}, {x: rect.x + rect.width, y: rect.y + rect.height}, 3, dashing);
+    drawDashedLine({ x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y }, 3, dashing);
+    drawDashedLine({ x: rect.x, y: rect.y }, { x: rect.x, y: rect.y + rect.height }, 3, dashing);
+    drawDashedLine({ x: rect.x + rect.width, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height }, 3, dashing);
+    drawDashedLine({ x: rect.x, y: rect.y + rect.height }, { x: rect.x + rect.width, y: rect.y + rect.height }, 3, dashing);
     resetDrawColor();
 }
 
@@ -287,18 +289,18 @@ function drawBoundingBox(from, to) {
  */
 function getAngleTextLocation(quadrant, angle, origin) {
     var angle_loc;
-    switch(quadrant) {
+    switch (quadrant) {
         case 1:
-            angle_loc = {x: origin.x + 40, y: origin.y + 14};
+            angle_loc = { x: origin.x + 40, y: origin.y + 14 };
             break;
         case 2:
-            angle_loc = {x: origin.x - 40, y: origin.y + 14};
+            angle_loc = { x: origin.x - 40, y: origin.y + 14 };
             break;
         case 3:
-            angle_loc = {x: origin.x - 40, y: origin.y - 6};
+            angle_loc = { x: origin.x - 40, y: origin.y - 6 };
             break;
         case 4:
-            angle_loc = {x: origin.x + 40, y: origin.y - 6};
+            angle_loc = { x: origin.x + 40, y: origin.y - 6 };
             break;
     }
     return angle_loc;

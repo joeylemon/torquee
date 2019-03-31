@@ -1,5 +1,6 @@
 const Component = {
-    X: 1, Y: 2
+    X: 1,
+    Y: 2
 };
 var cur_dampening = 16;
 var accurate_dampening = 70;
@@ -27,7 +28,7 @@ function distance(p1, p2) {
  * @param {Object} loc The new position, accounting for scale and translation
  */
 function getDrawPosition(loc) {
-    return {x: loc.x / scale - translation.x, y: loc.y / scale - translation.y};
+    return { x: loc.x / scale - translation.x, y: loc.y / scale - translation.y };
 }
 
 /**
@@ -56,13 +57,13 @@ function radToDeg(radians) {
  */
 function getQuadrant(angle) {
     var deg_angle = angle * (180 / Math.PI);
-    if(deg_angle >= 0 && deg_angle <= 90) {
+    if (deg_angle >= 0 && deg_angle <= 90) {
         return 1;
-    }else if(deg_angle > 90 && deg_angle <= 180) {
+    } else if (deg_angle > 90 && deg_angle <= 180) {
         return 2;
-    }else if(deg_angle < -90 && deg_angle >= -180) {
+    } else if (deg_angle < -90 && deg_angle >= -180) {
         return 3;
-    }else if(deg_angle < 0 && deg_angle >= -90) {
+    } else if (deg_angle < 0 && deg_angle >= -90) {
         return 4;
     }
 }
@@ -91,13 +92,13 @@ function nmToFtlb(nm) {
  * @param {number} quadrant The quadrant of the angle
  */
 function getStartingAngleForQuadrant(quadrant) {
-    if(quadrant == 4) {
+    if (quadrant == 4) {
         return 0;
-    }else if(quadrant == 3) {
+    } else if (quadrant == 3) {
         return Math.PI;
-    }else if(quadrant == 2) {
+    } else if (quadrant == 2) {
         return Math.PI;
-    }else if(quadrant == 1) {
+    } else if (quadrant == 1) {
         return 0;
     }
 }
@@ -112,14 +113,14 @@ function getStartingAngleForQuadrant(quadrant) {
  */
 function getTorqueSign(comp, val, from, loc) {
     var positive = (val > 0 ? false : true);
-    if(comp == Component.Y) {
+    if (comp == Component.Y) {
         var left = (loc.x - from.x > 0 ? true : false);
-        if((positive && left) || (!positive && !left)){
+        if ((positive && left) || (!positive && !left)) {
             return -1;
         }
-    }else if(comp == Component.X) {
+    } else if (comp == Component.X) {
         var below = (loc.y - from.y > 0 ? true : false);
-        if((positive && !below) || (!positive && below)){
+        if ((positive && !below) || (!positive && below)) {
             return -1;
         }
     }
@@ -136,14 +137,14 @@ function getNetTorque(loc) {
     var net = 0;
 
     // Loop through all drags and add torque to net
-    for(var i = 0; i < drags.length; i++) {
+    for (var i = 0; i < drags.length; i++) {
         var torque = drags[i].getTorque(loc);
         net += torque.x;
         net += torque.y;
     }
 
     // Include current drag if it exists
-    if(anchor && !erasing) {
+    if (anchor && !erasing) {
         var torque = getDrag().getTorque(loc);
         net += torque.x;
         net += torque.y;
@@ -165,9 +166,9 @@ function getLastAddedShape() {
  * @param {Object} loc The location to find shape at
  */
 function getShapeAtLocation(loc) {
-    for(var i = 0; i < shapes.length; i++) {
+    for (var i = 0; i < shapes.length; i++) {
         var shape = shapes[i];
-        if(distance(shape.center, loc) < shape.size) {
+        if (distance(shape.center, loc) < shape.size) {
             return shape;
         }
     }

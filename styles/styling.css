@@ -1,10 +1,10 @@
 * {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 
 @font-face {
@@ -41,7 +41,7 @@ body {
     top: 8px;
     left: 15px;
     width: 100px;
-    filter: drop-shadow(1px 1px 5px rgba(0,0,0,0.4));
+    filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.4));
     z-index: 2;
 }
 
@@ -86,12 +86,12 @@ body {
     position: fixed;
     top: 0px;
     left: 0px;
-    height: 100vh; 
+    height: 100vh;
     width: 100%;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .overlay .info-box {
@@ -101,7 +101,7 @@ body {
     padding: 10px;
     background-color: #fff;
     text-align: center;
-    box-shadow: 1px 1px 12px rgba(0,0,0,0.5);
+    box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
 }
 
@@ -130,7 +130,7 @@ body {
     position: relative;
     top: 10px;
     width: 65px;
-    filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.25));
+    filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
 }
 
 .overlay .info-box .close {
@@ -151,7 +151,7 @@ body {
     width: 175px;
     height: 250px;
     border-radius: 8px;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     margin-top: 10px;
     margin-left: 3px;
     margin-right: 3px;
@@ -190,15 +190,19 @@ body {
     left: -8px;
 }
 
-.toolbox {
+.tool-container {
     position: fixed;
     right: 20px;
     top: 65px;
+}
+
+.toolbox {
+    position: relative;
     width: 200px;
-    height: 250px;
+    height: 253px;
     border: 3px solid #545454;
     border-radius: 8px;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     text-align: center;
     padding-top: 10px;
 }
@@ -218,7 +222,7 @@ body {
 
 .toolbox .slider-text-bottom {
     position: absolute;
-    bottom: 0px;
+    bottom: 2px;
     right: 11px;
     font-family: profont;
     font-size: 10px;
@@ -244,7 +248,7 @@ body {
 .toolbox .delete .active {
     color: #fff;
     background-color: #57b755;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .toolbox button img {
@@ -266,8 +270,8 @@ body {
 }
 
 .toolbox .sizes .active {
-    transform: scale(1.1,1.1);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    transform: scale(1.1, 1.1);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
     color: #fff;
     background-color: #57b755;
 }
@@ -277,7 +281,7 @@ body {
 }
 
 .toolbox .shapes .active {
-    filter: drop-shadow(1px 1px 4px rgba(0,0,0,0.3)) grayscale(0%);
+    filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.3)) grayscale(0%);
     transform: scale(1.15, 1.15);
 }
 
@@ -305,7 +309,7 @@ body {
 .toolbox .highlight .active {
     color: #fff;
     background-color: #57b755;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 canvas {
