@@ -81,36 +81,57 @@
         </div>
     </div>
 
-    <div class="tool-container">
-        <div class="toolbox" id="toolbox">
-            <p class="slider-text">Zoom</p>
-            <p class="slider-text-bottom">Force Dampener</p>
-            <input class="slider" type="range" id="zoom" min="-0.4" max="2" step="0.1" defaultValue="0.8">
-            <div class="delete">
-                <button id="tool-clear">Clear</button>
-                <button id="tool-eraser"><img src="images/eraser.png">Eraser</button>
-            </div>
-            <div class="shapes">
-                <img class="active" id="tool-shape-square" src="images/square.png">
-                <img id="tool-shape-circle" src="images/circle.png">
-                <img id="tool-shape-triangle" src="images/triangle.png">
-            </div>
-            <div class="shapes">
-                <img id="tool-shape-flower" src="images/flower.png">
-                <img id="tool-shape-hexagon" src="images/hexagon.png">
-                <img id="tool-shape-schleter" src="images/schleter.png">
-            </div>
-            <div class="sizes">
-                <button class="size-select" id="tool-small">Small</button>
-                <button class="size-select active" id="tool-medium">Medium</button>
-                <button class="size-select" id="tool-large">Large</button>
-            </div>
-            <div class="highlight">
-                <button id="tool-move"><img src="images/grab.png">Move</button>
-                <button id="tool-highlight"><img src="images/highlight.png">Highlight</button>
-            </div>
-            <input class="slider" style="margin-top: 8px;" type="range" id="dampener" min="0.5" max="100" step="1" defaultValue="16">
+    <div class="tool-container" id="toolbox">
+        <p class="close" id="toolbox-close">-</p>
+        <div class="toolbox" id="toolbox-main">
+            <span class="toolbox-body">
+                <p class="slider-text">Zoom</p>
+                <p class="slider-text-bottom">Force Dampener</p>
+                <input class="slider" type="range" id="zoom" min="-0.4" max="2" step="0.1" defaultValue="0.8">
+                <div class="delete">
+                    <button id="tool-clear">Clear</button>
+                    <button id="tool-eraser"><img src="images/eraser.png">Eraser</button>
+                </div>
+                <div class="shapes">
+                    <img class="active" id="tool-shape-square" src="images/square.png">
+                    <img id="tool-shape-circle" src="images/circle.png">
+                    <img id="tool-shape-triangle" src="images/triangle.png">
+                </div>
+                <div class="shapes">
+                    <img id="tool-shape-flower" src="images/flower.png">
+                    <img id="tool-shape-hexagon" src="images/hexagon.png">
+                    <img id="tool-shape-schleter" src="images/schleter.png">
+                </div>
+                <div class="sizes">
+                    <button class="size-select" id="tool-small">Small</button>
+                    <button class="size-select active" id="tool-medium">Medium</button>
+                    <button class="size-select" id="tool-large">Large</button>
+                </div>
+                <div class="highlight">
+                    <button id="tool-move"><img src="images/grab.png">Move</button>
+                    <button id="tool-highlight"><img src="images/highlight.png">Highlight</button>
+                </div>
+                <input class="slider" style="margin-top: 8px;" type="range" id="dampener" min="0.5" max="100" step="1" defaultValue="16">
+            </span>
         </div>
+        <span class="toolbox-body">
+            <div class="toolbox" style="height: 62px;margin-top: 6px;padding-top: 0px;">
+                <div class="checkboxes">
+                    <div>
+                        <input class="check" type="checkbox" id="disable-distances">
+                        <p class="check-text">Disable distance lines</p>
+                    </div>
+                    <div>
+                        <input class="check" type="checkbox" id="disable-components">
+                        <p class="check-text">Disable force components</p>
+                    </div>
+                    <div>
+                        <input class="check" type="checkbox" id="disable-torque">
+                        <p class="check-text">Disable torque readings</p>
+                    </div>
+                </div>
+            </div>
+        </span>
     </div>
 
     <canvas id="canvas"></canvas>

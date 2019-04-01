@@ -173,3 +173,24 @@ function getShapeAtLocation(loc) {
         }
     }
 }
+
+/**
+ * Check if the user wants distances disabled
+ */
+function doDisableDistances() {
+    return document.getElementById("disable-distances").checked;
+}
+
+/**
+ * Check if the user wants components disabled
+ */
+function doDisableComponents() {
+    return document.getElementById("disable-components").checked;
+}
+
+/**
+ * Check if the user wants torque amounts disabled
+ */
+function doDisableTorque() {
+    return document.getElementById("disable-torque").checked;
+}

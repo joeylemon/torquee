@@ -64,17 +64,24 @@ class Drag {
             // Set color to transparent gray
             setDrawColor("rgba(88,89,91,0.4)");
 
-            // Draw x-component line
-            drawDashedLineWithArrow(this.from, { x: this.to.x, y: this.from.y }, 5);
+            if (!doDisableComponents()) {
+                // Draw x-component line
+                drawDashedLineWithArrow(this.from, { x: this.to.x, y: this.from.y }, 5);
 
-            // Draw y-component line
-            drawDashedLineWithArrow(this.from, { x: this.from.x, y: this.to.y }, 5);
+                // Draw y-component line
+                drawDashedLineWithArrow(this.from, { x: this.from.x, y: this.to.y }, 5);
 
-            if (this.deg_angle > 3) {
+                // Draw component texts
+                if (Math.abs(this.distances.x) > 60) this.component_text.x.draw();
+                if (Math.abs(this.distances.y) > 60) this.component_text.y.draw();
+            }
+
+            if (this.deg_angle > 3 && this.distance > 20) {
                 // Draw the angle text
                 drawText(this.deg_angle.toFixed(0) + "°", 12, this.angle_loc);
 
                 // Draw the angle arc
+                ctx.lineWidth = 5;
                 ctx.beginPath();
                 if (this.quadrant == 4 || this.quadrant == 2) {
                     ctx.arc(this.from.x, this.from.y, 25, this.start_angle, this.angle, true);
@@ -84,13 +91,9 @@ class Drag {
                 ctx.stroke();
             }
 
-            // Draw component texts
-            if (Math.abs(this.distances.x) > 60) this.component_text.x.draw();
-            if (Math.abs(this.distances.y) > 60) this.component_text.y.draw();
-
             // Draw distance lines extending from last added shape
             var shape = highlighted ? highlighted : getLastAddedShape();
-            if (shape && this.force > 0) {
+            if (shape && this.force > 0 && !doDisableDistances()) {
                 // Set color to transparent orange
                 setDrawColor("rgba(220,130,0,0.4)");
 
@@ -103,26 +106,38 @@ class Drag {
 
                 // Draw x distance line
                 ctx.lineCap = "square";
-                drawSolidLine(loc, { x: this.from.x, y: loc.y });
+                drawSolidLine(loc, { x: this.from.x, y: loc.y }, 5);
                 if (x_dist > 0.5) {
                     // Draw dist times force text above line
-                    drawText(x_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.y).toFixed(0) + "N", 10, { x: loc.x + ((this.from.x - loc.x) / 2), y: loc.y - 8 });
+                    var text = x_dist.toFixed(getDecimalPlaces()) + "m";
+                    if (!doDisableComponents()) {
+                        text += " x " + Math.abs(this.components.y).toFixed(0) + "N";
+                    }
+                    drawText(text, 10, { x: loc.x + ((this.from.x - loc.x) / 2), y: loc.y - 8 });
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).y.toFixed(getDecimalPlaces()) + " Nm", 10, { x: loc.x + ((this.from.x - loc.x) / 2), y: loc.y + 15 });
+                    if (!doDisableTorque()) {
+                        drawText(this.getTorque(loc).y.toFixed(getDecimalPlaces()) + " Nm", 10, { x: loc.x + ((this.from.x - loc.x) / 2), y: loc.y + 15 });
+                    }
                 }
 
                 // Draw y distance line
-                drawSolidLine(loc, { x: loc.x, y: this.from.y });
+                drawSolidLine(loc, { x: loc.x, y: this.from.y }, 5);
                 if (y_dist > 0.5) {
                     // Rotate the canvas 90 degrees
                     rotateCanvas(-Math.PI / 2, { x: loc.x - 7, y: loc.y + ((this.from.y - loc.y) / 2) });
 
                     // Draw dist times force text above line
-                    drawText(y_dist.toFixed(getDecimalPlaces()) + "m x " + Math.abs(this.components.x).toFixed(0) + "N", 10, { x: 0, y: 0 });
+                    var text = y_dist.toFixed(getDecimalPlaces()) + "m";
+                    if (!doDisableComponents()) {
+                        text += " x " + Math.abs(this.components.x).toFixed(0) + "N";
+                    }
+                    drawText(text, 10, { x: 0, y: 0 });
 
                     // Draw torque text below line
-                    drawText(this.getTorque(loc).x.toFixed(getDecimalPlaces()) + " Nm", 10, { x: 0, y: 23 });
+                    if (!doDisableTorque()) {
+                        drawText(this.getTorque(loc).x.toFixed(getDecimalPlaces()) + " Nm", 10, { x: 0, y: 23 });
+                    }
 
                     unrotateCanvas();
                 }
@@ -248,6 +263,8 @@ class Shape {
         rotateCanvas(this.rotation, this.loc);
         ctx.drawImage(this.img, -this.size / 2, -this.size / 2, this.size, this.size);
         unrotateCanvas();
+
+        if (doDisableTorque()) return;
 
         drawText(this.getTorque().toFixed(getDecimalPlaces()) + " Nm", 12, { x: this.loc.x, y: this.center.y + this.size + 13 }, "profont");
         if (highlighted && highlighted.id == this.id) {

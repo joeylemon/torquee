@@ -192,8 +192,8 @@ body {
 
 .tool-container {
     position: fixed;
-    right: 20px;
-    top: 65px;
+    right: 10px;
+    top: 55px;
 }
 
 .toolbox {
@@ -204,7 +204,19 @@ body {
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    padding-top: 10px;
+    padding-top: 15px;
+}
+
+.tool-container .close {
+    position: absolute;
+    top: -11px;
+    right: 10px;
+    font-family: bigfont;
+    font-size: 35px;
+    color: #808080;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1;
 }
 
 .toolbox .slider {
@@ -213,8 +225,8 @@ body {
 
 .toolbox .slider-text {
     position: absolute;
-    top: 2px;
-    right: 11px;
+    top: 7px;
+    left: 11px;
     font-family: profont;
     font-size: 10px;
     color: #808080;
@@ -226,6 +238,24 @@ body {
     right: 11px;
     font-family: profont;
     font-size: 10px;
+    color: #808080;
+}
+
+.toolbox .checkboxes {
+    text-align: left;
+    padding-left: 10px;
+    margin-top: 3px;
+}
+
+.toolbox .checkboxes .check {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.toolbox .checkboxes .check-text {
+    display: inline-block;
+    font-family: profont;
+    font-size: 13px;
     color: #808080;
 }
 

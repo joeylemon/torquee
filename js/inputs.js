@@ -78,18 +78,14 @@ $("#canvas").mouseup(function(e) {
     }
 });
 
-/**
- * Right click: add shape to canvas
- */
+// Right click: add shape to canvas
 $("#canvas").contextmenu(function(e) {
     mouse = getDrawPosition({ x: e.pageX, y: e.pageY });
     e.preventDefault();
     return false;
 });
 
-/**
- * Mousewheel: zoom/pan canvas
- */
+// Mousewheel: zoom/pan canvas
 var cur_zoom = 0;
 $("#canvas").on("mousewheel", function(e) {
     if (e.ctrlKey) {
@@ -108,35 +104,27 @@ $("#canvas").on("mousewheel", function(e) {
     }
 });
 
-/**
- * Slider: zoom canvas
- */
+// Slider: zoom canvas
 document.getElementById("zoom").value = cur_zoom;
 document.getElementById("zoom").oninput = function(e) {
     cur_zoom = parseFloat(document.getElementById("zoom").value);
     zoom(1 + cur_zoom);
 }
 
-/**
- * Slider: force dampener
- */
+// Slider: force dampener
 document.getElementById("dampener").value = cur_dampening;
 document.getElementById("dampener").oninput = function(e) {
     cur_dampening = parseFloat(document.getElementById("dampener").value);
 }
 
-/**
- * Clear button: clear all objects from canvas
- */
+// Clear button: clear all objects from canvas
 $("#tool-clear").click(function(e) {
     drags = new Array();
     shapes = new Array();
     highlighted = undefined;
 });
 
-/**
- * Erase button: toggle eraser
- */
+// Erase button: toggle eraser
 var erasing = false;
 $("#tool-eraser").click(function(e) {
     erasing = !erasing;
@@ -153,9 +141,7 @@ function toggleErasing(on) {
     }
 }
 
-/**
- * Highlight button: toggle highlighter
- */
+// Highlight button: toggle highlighter
 var highlighting = false;
 $("#tool-highlight").click(function(e) {
     highlighting = !highlighting;
@@ -172,9 +158,7 @@ function toggleHighlighting(on) {
     }
 }
 
-/**
- * Move button: toggle canvas pan-grab
- */
+// Move button: toggle canvas pan-grab
 $("#tool-move").click(function(e) {
     moving = !moving;
     toggleMoving(moving);
@@ -190,9 +174,7 @@ function toggleMoving(on) {
     }
 }
 
-/**
- * Shape selection: change the current shape
- */
+// Shape selection: change the current shape
 var current_shape = "square";
 $("[id*='tool-shape']").click(function(e) {
     var target = e.target.id;
@@ -202,15 +184,29 @@ $("[id*='tool-shape']").click(function(e) {
     current_shape = shape;
 });
 
-/**
- * Size button: change the size of newly-added shapes
- */
+// Size button: change the size of newly-added shapes
 var current_size = "tool-medium";
 $("#tool-small, #tool-medium, #tool-large").click(function(e) {
     var target = e.target.id;
     $("#" + current_size).removeClass("active");
     $("#" + target).addClass("active");
     current_size = target;
+});
+
+var toolbox_open = true;
+$("#toolbox-close").click(function(e) {
+    toolbox_open = !toolbox_open;
+    if (toolbox_open) {
+        $("#toolbox-main").css({ height: "253px" });
+        $(".toolbox-body").show();
+        $("#toolbox-close").css({ right: "10px" });
+        $("#toolbox-close").html("-");
+    } else {
+        $(".toolbox-body").hide();
+        $("#toolbox-main").css({ height: "4px" });
+        $("#toolbox-close").css({ right: "8px" });
+        $("#toolbox-close").html("+");
+    }
 });
 
 /**
