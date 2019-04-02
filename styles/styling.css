@@ -209,13 +209,14 @@ body {
 
 .tool-container .close {
     position: absolute;
-    top: -11px;
+    top: 6px;
     right: 10px;
-    font-family: bigfont;
-    font-size: 35px;
-    color: #545454;
+    font-family: profont;
+    font-size: 10px;
+    color: #808080;
     cursor: pointer;
     user-select: none;
+    text-decoration: underline;
     z-index: 1;
 }
 

@@ -199,13 +199,11 @@ $("#toolbox-close").click(function(e) {
     if (toolbox_open) {
         $("#toolbox-main").css({ height: "242px" });
         $(".toolbox-body").show();
-        $("#toolbox-close").css({ right: "10px" });
-        $("#toolbox-close").html("-");
+        $("#toolbox-close").html("close");
     } else {
         $(".toolbox-body").hide();
         $("#toolbox-main").css({ height: "4px" });
-        $("#toolbox-close").css({ right: "8px" });
-        $("#toolbox-close").html("+");
+        $("#toolbox-close").html("open");
     }
 });
 
