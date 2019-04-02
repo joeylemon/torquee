@@ -197,7 +197,7 @@ var toolbox_open = true;
 $("#toolbox-close").click(function(e) {
     toolbox_open = !toolbox_open;
     if (toolbox_open) {
-        $("#toolbox-main").css({ height: "253px" });
+        $("#toolbox-main").css({ height: "242px" });
         $(".toolbox-body").show();
         $("#toolbox-close").css({ right: "10px" });
         $("#toolbox-close").html("-");

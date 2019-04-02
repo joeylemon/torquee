@@ -199,7 +199,7 @@ body {
 .toolbox {
     position: relative;
     width: 200px;
-    height: 253px;
+    height: 242px;
     border: 3px solid #545454;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -213,7 +213,7 @@ body {
     right: 10px;
     font-family: bigfont;
     font-size: 35px;
-    color: #808080;
+    color: #545454;
     cursor: pointer;
     user-select: none;
     z-index: 1;
@@ -289,13 +289,13 @@ body {
 }
 
 .toolbox .sizes {
-    margin-top: 6px;
+    margin-top: -3px;
 }
 
 .toolbox .sizes .size-select {
     width: 57px;
-    height: 20px;
-    font-size: 10px;
+    height: 14px;
+    font-size: 9px;
     border-radius: 5px;
 }
 
