@@ -264,13 +264,16 @@ class Shape {
         ctx.drawImage(this.img, -this.size / 2, -this.size / 2, this.size, this.size);
         unrotateCanvas();
 
-        if (doDisableTorque()) return;
+        var mass_offset = 13;
+        if (!doDisableTorque()) {
+            drawText(this.getTorque().toFixed(getDecimalPlaces()) + " Nm", 12, { x: this.loc.x, y: this.center.y + this.size + 13 }, "profont");
+            mass_offset = 24.5;
+        }
 
-        drawText(this.getTorque().toFixed(getDecimalPlaces()) + " Nm", 12, { x: this.loc.x, y: this.center.y + this.size + 13 }, "profont");
         if (highlighted && highlighted.id == this.id) {
             setDrawColor("#5b5b5b");
             drawText(-this.getAngularAcceleration().toFixed(4) + " rad/s²", 11, { x: this.loc.x, y: this.center.y - 7 }, "profont");
-            drawText(this.mom_inertia + " kg-m²", 11, { x: this.loc.x + 2, y: this.center.y + this.size + 24.5 }, "profont");
+            drawText(this.mom_inertia + " kg-m²", 11, { x: this.loc.x + 2, y: this.center.y + this.size + mass_offset }, "profont");
             resetDrawColor();
         }
     }
