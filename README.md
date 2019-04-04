@@ -15,5 +15,5 @@ Our simulation covered torque, including:
 - Calculations of the components of a given force based on the angle and magnitude
 
 <img align="left" src="https://i.imgur.com/xi8nLOo.png" height="240">
-<img align="left" src="https://i.imgur.com/jlxCBqv.png" height="240">
-<img align="clear" src="https://i.imgur.com/yuQRJ9d.png" height="240">
+<img align="left" src="https://thumbs.gfycat.com/LivelyConventionalDormouse-small.gif" height="240">
+<img align="clear" src="https://i.imgur.com/jlxCBqv.png" height="240">
