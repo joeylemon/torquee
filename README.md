@@ -1,6 +1,8 @@
 # Torquee
 A torque simulation designed to help physics students visualize the basic concept covered in most introductional physics classes.
 
+Made with vanilla Javascript and jQuery. From-scratch canvas rendering and physics calculations.
+
 ## The Project
 This was a part of the final project for EF 152 at the University of Tennessee. We were tasked with completing the follows:
 - Research and define a need for a web based simulation of a physics principle
